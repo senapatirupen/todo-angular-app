@@ -1,0 +1,91 @@
+<!-- components/todo-list/todo-list.component.html -->
+<div class="todo-container">
+  <div class="header">
+    <h2>My Todo List</h2>
+    <div class="user-info">
+      <span>Welcome, {{ getCurrentUser()?.username }}!</span>
+      <button class="btn btn-outline-danger btn-sm" (click)="logout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="alert alert-danger" *ngIf="errorMessage" (click)="errorMessage = ''">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Add Todo Form -->
+  <div class="add-todo-card card">
+    <div class="card-body">
+      <h5 class="card-title">Add New Todo</h5>
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Todo title"
+          [(ngModel)]="newTodo.title"
+          (keyup.enter)="createTodo()"
+        >
+      </div>
+      <div class="form-group">
+        <textarea
+          class="form-control"
+          placeholder="Description (optional)"
+          [(ngModel)]="newTodo.description"
+          rows="2"
+        ></textarea>
+      </div>
+      <button
+        class="btn btn-primary"
+        (click)="createTodo()"
+        [disabled]="!newTodo.title.trim()"
+      >
+        Add Todo
+      </button>
+    </div>
+  </div>
+
+  <!-- Filter Buttons -->
+  <div class="filter-buttons">
+    <button
+      class="btn btn-outline-primary"
+      [class.active]="filter === 'all'"
+      (click)="onFilterChange('all')"
+    >
+      All ({{ allCount }})
+    </button>
+    <button
+      class="btn btn-outline-success"
+      [class.active]="filter === 'completed'"
+      (click)="onFilterChange('completed')"
+    >
+      Completed ({{ completedCount }})
+    </button>
+    <button
+      class="btn btn-outline-warning"
+      [class.active]="filter === 'pending'"
+      (click)="onFilterChange('pending')"
+    >
+      Pending ({{ pendingCount }})
+    </button>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div class="text-center" *ngIf="isLoading">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Todo List -->
+  <div class="todo-list" *ngIf="!isLoading">
+    <div *ngIf="filteredTodos.length === 0" class="empty-state">
+      <p>No todos found.</p>
+    </div>
+
+    <app-todo-item
+      *ngFor="let todo of filteredTodos"
+      [todo]="todo"
+      (toggle)="toggleTodoCompletion(todo)"
+      (delete)="deleteTodo(todo)"
+    ></app-todo-item>
+  </div>
+</div>

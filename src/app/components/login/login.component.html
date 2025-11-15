@@ -1,0 +1,59 @@
+<!-- components/login/login.component.html -->
+<div class="login-container">
+  <div class="card">
+    <div class="card-header">
+      <h3>Login</h3>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            formControlName="username"
+            class="form-control"
+            [class.is-invalid]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
+          >
+          <div class="invalid-feedback" *ngIf="loginForm.get('username')?.errors?.['required'] && loginForm.get('username')?.touched">
+            Username is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            class="form-control"
+            [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+          >
+          <div class="invalid-feedback" *ngIf="loginForm.get('password')?.errors?.['required'] && loginForm.get('password')?.touched">
+            Password is required
+          </div>
+          <div class="invalid-feedback" *ngIf="loginForm.get('password')?.errors?.['minlength'] && loginForm.get('password')?.touched">
+            Password must be at least 6 characters
+          </div>
+        </div>
+
+        <div class="alert alert-danger" *ngIf="errorMessage">
+          {{ errorMessage }}
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-primary btn-block"
+          [disabled]="loginForm.invalid || isLoading"
+        >
+          <span *ngIf="isLoading" class="spinner-border spinner-border-sm"></span>
+          {{ isLoading ? 'Logging in...' : 'Login' }}
+        </button>
+
+        <div class="text-center mt-3">
+          <a routerLink="/register">Don't have an account? Register</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

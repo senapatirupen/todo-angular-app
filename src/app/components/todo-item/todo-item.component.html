@@ -1,0 +1,35 @@
+<!-- components/todo-item/todo-item.component.html -->
+<div class="todo-item card" [class.completed]="todo.completed">
+  <div class="card-body">
+    <div class="todo-content">
+      <div class="todo-header">
+        <h5 [class.completed]="todo.completed">{{ todo.title }}</h5>
+        <div class="todo-actions">
+          <button
+            class="btn btn-sm"
+            [class]="todo.completed ? 'btn-warning' : 'btn-success'"
+            (click)="onToggle()"
+          >
+            {{ todo.completed ? 'Undo' : 'Complete' }}
+          </button>
+          <button class="btn btn-danger btn-sm" (click)="onDelete()">
+            Delete
+          </button>
+        </div>
+      </div>
+      
+      <p class="todo-description" *ngIf="todo.description">
+        {{ todo.description }}
+      </p>
+      
+      <div class="todo-meta">
+        <small class="text-muted">
+          Created: {{ formatDate(todo.createdAt!) }}
+          <span *ngIf="todo.updatedAt && todo.updatedAt !== todo.createdAt">
+            | Updated: {{ formatDate(todo.updatedAt) }}
+          </span>
+        </small>
+      </div>
+    </div>
+  </div>
+</div>

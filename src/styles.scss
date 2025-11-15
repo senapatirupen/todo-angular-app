@@ -1,1 +1,130 @@
 /* You can add global styles to this file, and also import other style files */
+/* styles.css - Global Styles */
+body {
+  background-color: #f8f9fa;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-container,
+.register-container {
+  max-width: 400px;
+  margin: 100px auto;
+  padding: 20px;
+}
+
+.todo-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.add-todo-card {
+  margin-bottom: 30px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.filter-buttons {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.filter-buttons .btn.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.todo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.todo-item {
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.todo-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.todo-item.completed {
+  opacity: 0.7;
+  background-color: #f8f9fa;
+}
+
+.todo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.todo-header h5.completed {
+  text-decoration: line-through;
+  color: #6c757d;
+}
+
+.todo-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.todo-description {
+  color: #6c757d;
+  margin-bottom: 10px;
+}
+
+.todo-meta {
+  font-size: 0.8rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: #6c757d;
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .todo-container {
+    padding: 10px;
+  }
+  
+  .header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  .todo-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .todo-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
