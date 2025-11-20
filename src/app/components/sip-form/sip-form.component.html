@@ -1,0 +1,331 @@
+<div class="container-fluid py-4">
+  <!-- Header Section -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h1 class="h3 mb-1">
+            <i class="fas fa-calendar-plus text-primary me-2"></i>
+            {{ isEdit ? 'Edit SIP Investment' : 'Create New SIP Investment' }}
+          </h1>
+          <p class="text-muted mb-0">
+            {{ isEdit ? 'Update SIP investment details and projections' : 'Calculate future value of systematic monthly investments' }}
+          </p>
+        </div>
+        <button class="btn btn-outline-secondary" (click)="onCancel()">
+          <i class="fas fa-arrow-left me-2"></i>Back to List
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alert Messages -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i>{{ errorMessage }}
+        <button type="button" class="btn-close" (click)="errorMessage = ''"></button>
+      </div>
+      
+      <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle me-2"></i>{{ successMessage }}
+        <button type="button" class="btn-close" (click)="successMessage = ''"></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Main Form Column -->
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-header bg-light py-3">
+          <h5 class="card-title mb-0 fw-semibold">
+            <i class="fas fa-edit text-muted me-2"></i>
+            SIP Details
+          </h5>
+        </div>
+        <div class="card-body">
+          <!-- Loading State -->
+          <div *ngIf="isLoading && isEdit" class="text-center py-5">
+            <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+              <span class="visually-hidden">Loading SIP...</span>
+            </div>
+            <p class="text-muted">Loading SIP details...</p>
+          </div>
+
+          <form *ngIf="!isLoading || !isEdit" [formGroup]="sipForm" (ngSubmit)="onSubmit()">
+            <!-- Investment Name -->
+            <div class="row mb-4">
+              <div class="col-md-12">
+                <label for="investmentOnName" class="form-label fw-semibold">
+                  Investment Name <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  class="form-control form-control-lg"
+                  id="investmentOnName"
+                  formControlName="investmentOnName"
+                  placeholder="e.g., Mutual Fund SIP, Stock Portfolio, Index Fund, ETF"
+                  [class.is-invalid]="investmentOnName?.invalid && (investmentOnName?.dirty || investmentOnName?.touched)"
+                >
+                <div *ngIf="investmentOnName?.invalid && (investmentOnName?.dirty || investmentOnName?.touched)" class="invalid-feedback">
+                  <div *ngIf="investmentOnName?.errors?.['required']">Investment name is required</div>
+                  <div *ngIf="investmentOnName?.errors?.['maxlength']">Name must be less than 100 characters</div>
+                </div>
+                <div class="form-text">Give your SIP a clear, descriptive name</div>
+              </div>
+            </div>
+
+            <!-- Monthly Investment -->
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <label for="monthlyInvestment" class="form-label fw-semibold">
+                  Monthly Investment ($) <span class="text-danger">*</span>
+                </label>
+                <div class="input-group">
+                  <span class="input-group-text">$</span>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="monthlyInvestment"
+                    formControlName="monthlyInvestment"
+                    min="100"
+                    max="1000000"
+                    step="100"
+                    placeholder="1000"
+                    [class.is-invalid]="monthlyInvestment?.invalid && (monthlyInvestment?.dirty || monthlyInvestment?.touched)"
+                  >
+                </div>
+                <div *ngIf="monthlyInvestment?.invalid && (monthlyInvestment?.dirty || monthlyInvestment?.touched)" class="invalid-feedback">
+                  <div *ngIf="monthlyInvestment?.errors?.['required']">Monthly investment is required</div>
+                  <div *ngIf="monthlyInvestment?.errors?.['min']">Investment must be at least $100</div>
+                  <div *ngIf="monthlyInvestment?.errors?.['max']">Investment cannot exceed $1,000,000</div>
+                </div>
+                <div class="form-text">Amount to invest every month</div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="duration" class="form-label fw-semibold">
+                  Investment Duration <span class="text-danger">*</span>
+                </label>
+                <div class="input-group">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="duration"
+                    formControlName="duration"
+                    min="1"
+                    max="600"
+                    placeholder="60"
+                    [class.is-invalid]="duration?.invalid && (duration?.dirty || duration?.touched)"
+                  >
+                  <span class="input-group-text">months</span>
+                </div>
+                <div *ngIf="duration?.invalid && (duration?.dirty || duration?.touched)" class="invalid-feedback">
+                  <div *ngIf="duration?.errors?.['required']">Investment duration is required</div>
+                  <div *ngIf="duration?.errors?.['min']">Duration must be at least 1 month</div>
+                  <div *ngIf="duration?.errors?.['max']">Duration cannot exceed 600 months (50 years)</div>
+                </div>
+                <div class="form-text">Total investment period in months</div>
+              </div>
+            </div>
+
+            <!-- Expected Return -->
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <label for="expectedReturn" class="form-label fw-semibold">
+                  Expected Annual Return (%) <span class="text-danger">*</span>
+                </label>
+                <div class="input-group">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="expectedReturn"
+                    formControlName="expectedReturn"
+                    min="1"
+                    max="50"
+                    step="0.1"
+                    placeholder="12.0"
+                    [class.is-invalid]="expectedReturn?.invalid && (expectedReturn?.dirty || expectedReturn?.touched)"
+                  >
+                  <span class="input-group-text">%</span>
+                </div>
+                <div *ngIf="expectedReturn?.invalid && (expectedReturn?.dirty || expectedReturn?.touched)" class="invalid-feedback">
+                  <div *ngIf="expectedReturn?.errors?.['required']">Expected return is required</div>
+                  <div *ngIf="expectedReturn?.errors?.['min']">Return must be at least 1%</div>
+                  <div *ngIf="expectedReturn?.errors?.['max']">Return cannot exceed 50%</div>
+                </div>
+                <div class="form-text">Expected annual rate of return</div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="row mt-4">
+              <div class="col-12">
+                <div class="d-flex gap-2 justify-content-end">
+                  <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">
+                    <i class="fas fa-times me-2"></i>Cancel
+                  </button>
+                  <button 
+                    type="submit" 
+                    class="btn btn-primary"
+                    [disabled]="isLoading || sipForm.invalid"
+                  >
+                    <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </span>
+                    <i *ngIf="!isLoading" class="fas fa-save me-2"></i>
+                    {{ isEdit ? 'Update SIP' : 'Create SIP' }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calculation Results Sidebar -->
+    <div class="col-lg-4">
+      <!-- Projection Results Card -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-light py-3">
+          <h5 class="card-title mb-0 fw-semibold">
+            <i class="fas fa-calculator text-muted me-2"></i>
+            SIP Projection
+          </h5>
+        </div>
+        <div class="card-body">
+          <div *ngIf="!(sipForm.get('monthlyInvestment')?.value && sipForm.get('duration')?.value && sipForm.get('expectedReturn')?.value)" 
+                class="text-center py-4">
+            <i class="fas fa-calculator fa-2x text-muted mb-3 opacity-50"></i>
+            <p class="text-muted mb-0">Enter SIP details to see projections</p>
+          </div>
+
+          <div *ngIf="calculatedValues.futureValue" class="calculation-results">
+            <!-- Future Value -->
+            <div class="mb-4 p-3 bg-success bg-opacity-10 rounded">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="fw-semibold text-success">Future Value</span>
+                <i class="fas fa-rocket text-success"></i>
+              </div>
+              <h3 class="text-success fw-bold mb-0">
+                ${{ calculatedValues.futureValue | number:'1.2-2' }}
+              </h3>
+              <small class="text-muted">
+                After {{ sipForm.get('duration')?.value }} months
+              </small>
+            </div>
+
+            <!-- Total Investment -->
+            <div class="mb-4 p-3 bg-primary bg-opacity-10 rounded">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="fw-semibold text-primary">Total Investment</span>
+                <i class="fas fa-money-bill-wave text-primary"></i>
+              </div>
+              <h4 class="text-primary fw-bold mb-0">
+                ${{ calculatedValues.totalInvestment | number:'1.2-2' }}
+              </h4>
+              <small class="text-muted">
+                Principal amount invested
+              </small>
+            </div>
+
+            <!-- Total Interest -->
+            <div class="mb-4 p-3 bg-info bg-opacity-10 rounded">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="fw-semibold text-info">Total Interest</span>
+                <i class="fas fa-chart-line text-info"></i>
+              </div>
+              <h4 class="text-info fw-bold mb-0">
+                ${{ calculatedValues.totalInterestPaid | number:'1.2-2' }}
+              </h4>
+              <small class="text-muted">
+                Earnings from investment
+              </small>
+            </div>
+
+            <!-- Return Percentage -->
+            <div class="p-3 bg-warning bg-opacity-10 rounded">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="fw-semibold text-warning">Return Percentage</span>
+                <i class="fas fa-percentage text-warning"></i>
+              </div>
+              <h4 class="text-warning fw-bold mb-0">
+                {{ calculatedValues.returnPercentage | number:'1.2-2' }}%
+              </h4>
+              <small class="text-muted">
+                Percentage gain on investment
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Growth Visualization Card -->
+      <div class="card shadow-sm" *ngIf="calculatedValues.futureValue">
+        <div class="card-header bg-light py-3">
+          <h5 class="card-title mb-0 fw-semibold">
+            <i class="fas fa-chart-bar text-muted me-2"></i>
+            Investment Growth
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="growth-comparison">
+            <div class="d-flex justify-content-between align-items-center mb-3 p-3 bg-light rounded">
+              <div class="text-center">
+                <small class="text-muted d-block">Total Invested</small>
+                <strong class="text-primary">${{ calculatedValues.totalInvestment | number:'1.2-2' }}</strong>
+              </div>
+              <div class="text-center">
+                <i class="fas fa-arrow-right text-muted"></i>
+              </div>
+              <div class="text-center">
+                <small class="text-muted d-block">Future Value</small>
+                <strong class="text-success">${{ calculatedValues.futureValue | number:'1.2-2' }}</strong>
+              </div>
+            </div>
+            
+            <div class="progress mb-2" style="height: 20px;">
+              <div class="progress-bar bg-success" 
+                   role="progressbar"
+                   [style.width]="'100%'"
+                   [attr.aria-valuenow]="calculatedValues.returnPercentage"
+                   aria-valuemin="0"
+                   aria-valuemax="100">
+                <span class="fw-semibold">{{ calculatedValues.returnPercentage | number:'1.2-2' }}% Return</span>
+              </div>
+            </div>
+            
+            <div class="text-center">
+              <small class="text-muted">
+                Monthly investment of ${{ sipForm.get('monthlyInvestment')?.value | number:'1.2-2' }} for {{ sipForm.get('duration')?.value }} months
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIP Info Card -->
+      <div class="card shadow-sm">
+        <div class="card-header bg-light py-3">
+          <h5 class="card-title mb-0 fw-semibold">
+            <i class="fas fa-info-circle text-muted me-2"></i>
+            About SIP
+          </h5>
+        </div>
+        <div class="card-body">
+          <p class="small text-muted mb-2">
+            <strong>Systematic Investment Plan (SIP)</strong> allows you to invest a fixed amount regularly in mutual funds or other investment vehicles.
+          </p>
+          <p class="small text-muted mb-0">
+            • Invest small amounts regularly<br>
+            • Benefit from rupee cost averaging<br>
+            • Power of compounding over time<br>
+            • Disciplined approach to investing
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

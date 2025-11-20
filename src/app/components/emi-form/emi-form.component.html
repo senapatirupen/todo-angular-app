@@ -1,0 +1,308 @@
+<div class="container-fluid py-4">
+  <!-- Header Section -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h1 class="h3 mb-1">
+            <i class="fas fa-credit-card text-primary me-2"></i>
+            {{ isEdit ? 'Edit EMI Loan' : 'Create New EMI Loan' }}
+          </h1>
+          <p class="text-muted mb-0">
+            {{ isEdit ? 'Update EMI loan details and payment information' : 'Calculate and track your Equated Monthly Installment' }}
+          </p>
+        </div>
+        <button class="btn btn-outline-secondary" (click)="onCancel()">
+          <i class="fas fa-arrow-left me-2"></i>Back to List
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alert Messages -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i>{{ errorMessage }}
+        <button type="button" class="btn-close" (click)="errorMessage = ''"></button>
+      </div>
+      
+      <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle me-2"></i>{{ successMessage }}
+        <button type="button" class="btn-close" (click)="successMessage = ''"></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Main Form Column -->
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-header bg-light py-3">
+          <h5 class="card-title mb-0 fw-semibold">
+            <i class="fas fa-edit text-muted me-2"></i>
+            Loan Details
+          </h5>
+        </div>
+        <div class="card-body">
+          <!-- Loading State -->
+          <div *ngIf="isLoading && isEdit" class="text-center py-5">
+            <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+              <span class="visually-hidden">Loading EMI...</span>
+            </div>
+            <p class="text-muted">Loading EMI details...</p>
+          </div>
+
+          <form *ngIf="!isLoading || !isEdit" [formGroup]="emiForm" (ngSubmit)="onSubmit()">
+            <!-- Loan Purpose -->
+            <div class="row mb-4">
+              <div class="col-md-12">
+                <label for="emiForName" class="form-label fw-semibold">
+                  Loan Purpose <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  class="form-control form-control-lg"
+                  id="emiForName"
+                  formControlName="emiForName"
+                  placeholder="e.g., Home Loan, Car Loan, Personal Loan, Education Loan"
+                  [class.is-invalid]="emiForName?.invalid && (emiForName?.dirty || emiForName?.touched)"
+                >
+                <div *ngIf="emiForName?.invalid && (emiForName?.dirty || emiForName?.touched)" class="invalid-feedback">
+                  <div *ngIf="emiForName?.errors?.['required']">Loan purpose is required</div>
+                  <div *ngIf="emiForName?.errors?.['maxlength']">Name must be less than 100 characters</div>
+                </div>
+                <div class="form-text">Describe what this loan is for</div>
+              </div>
+            </div>
+
+            <!-- Principal Amount -->
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <label for="principal" class="form-label fw-semibold">
+                  Loan Amount ($) <span class="text-danger">*</span>
+                </label>
+                <div class="input-group">
+                  <span class="input-group-text">$</span>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="principal"
+                    formControlName="principal"
+                    min="1"
+                    max="100000000"
+                    step="100"
+                    placeholder="100000"
+                    [class.is-invalid]="principal?.invalid && (principal?.dirty || principal?.touched)"
+                  >
+                </div>
+                <div *ngIf="principal?.invalid && (principal?.dirty || principal?.touched)" class="invalid-feedback">
+                  <div *ngIf="principal?.errors?.['required']">Loan amount is required</div>
+                  <div *ngIf="principal?.errors?.['min']">Amount must be at least $1</div>
+                  <div *ngIf="principal?.errors?.['max']">Amount cannot exceed $100,000,000</div>
+                </div>
+                <div class="form-text">Total loan amount (principal)</div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="annualInterestRate" class="form-label fw-semibold">
+                  Annual Interest Rate (%) <span class="text-danger">*</span>
+                </label>
+                <div class="input-group">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="annualInterestRate"
+                    formControlName="annualInterestRate"
+                    min="0.01"
+                    max="100"
+                    step="0.01"
+                    placeholder="8.5"
+                    [class.is-invalid]="annualInterestRate?.invalid && (annualInterestRate?.dirty || annualInterestRate?.touched)"
+                  >
+                  <span class="input-group-text">%</span>
+                </div>
+                <div *ngIf="annualInterestRate?.invalid && (annualInterestRate?.dirty || annualInterestRate?.touched)" class="invalid-feedback">
+                  <div *ngIf="annualInterestRate?.errors?.['required']">Interest rate is required</div>
+                  <div *ngIf="annualInterestRate?.errors?.['min']">Rate must be at least 0.01%</div>
+                  <div *ngIf="annualInterestRate?.errors?.['max']">Rate cannot exceed 100%</div>
+                </div>
+                <div class="form-text">Annual interest rate on the loan</div>
+              </div>
+            </div>
+
+            <!-- Tenure -->
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <label for="totalTenure" class="form-label fw-semibold">
+                  Loan Tenure <span class="text-danger">*</span>
+                </label>
+                <div class="input-group">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="totalTenure"
+                    formControlName="totalTenure"
+                    min="1"
+                    max="600"
+                    placeholder="60"
+                    [class.is-invalid]="totalTenure?.invalid && (totalTenure?.dirty || totalTenure?.touched)"
+                  >
+                  <span class="input-group-text">months</span>
+                </div>
+                <div *ngIf="totalTenure?.invalid && (totalTenure?.dirty || totalTenure?.touched)" class="invalid-feedback">
+                  <div *ngIf="totalTenure?.errors?.['required']">Loan tenure is required</div>
+                  <div *ngIf="totalTenure?.errors?.['min']">Tenure must be at least 1 month</div>
+                  <div *ngIf="totalTenure?.errors?.['max']">Tenure cannot exceed 600 months (50 years)</div>
+                </div>
+                <div class="form-text">Total loan period in months</div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="tenuresPaid" class="form-label fw-semibold">
+                  Payments Made
+                </label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="tenuresPaid"
+                  formControlName="tenuresPaid"
+                  min="0"
+                  max="600"
+                  placeholder="0"
+                  [class.is-invalid]="tenuresPaid?.invalid && (tenuresPaid?.dirty || tenuresPaid?.touched)"
+                >
+                <div *ngIf="tenuresPaid?.invalid && (tenuresPaid?.dirty || tenuresPaid?.touched)" class="invalid-feedback">
+                  <div *ngIf="tenuresPaid?.errors?.['min']">Payments cannot be negative</div>
+                  <div *ngIf="tenuresPaid?.errors?.['max']">Payments cannot exceed 600</div>
+                </div>
+                <div class="form-text">Number of EMI payments already made</div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="row mt-4">
+              <div class="col-12">
+                <div class="d-flex gap-2 justify-content-end">
+                  <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">
+                    <i class="fas fa-times me-2"></i>Cancel
+                  </button>
+                  <button 
+                    type="submit" 
+                    class="btn btn-primary"
+                    [disabled]="isLoading || emiForm.invalid"
+                  >
+                    <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </span>
+                    <i *ngIf="!isLoading" class="fas fa-save me-2"></i>
+                    {{ isEdit ? 'Update EMI' : 'Create EMI' }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calculation Results Sidebar -->
+    <div class="col-lg-4">
+      <!-- EMI Calculation Card -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-light py-3">
+          <h5 class="card-title mb-0 fw-semibold">
+            <i class="fas fa-calculator text-muted me-2"></i>
+            EMI Calculation
+          </h5>
+        </div>
+        <div class="card-body">
+          <div *ngIf="!calculatedEMI" class="text-center py-4">
+            <i class="fas fa-calculator fa-2x text-muted mb-3 opacity-50"></i>
+            <p class="text-muted mb-0">Enter loan details to calculate EMI</p>
+          </div>
+
+          <div *ngIf="calculatedEMI" class="calculation-results">
+            <!-- Monthly EMI -->
+            <div class="mb-4 p-3 bg-primary bg-opacity-10 rounded">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="fw-semibold text-primary">Monthly EMI</span>
+                <i class="fas fa-calendar-alt text-primary"></i>
+              </div>
+              <h3 class="text-primary fw-bold mb-0">
+                ${{ calculatedEMI | number:'1.2-2' }}
+              </h3>
+              <small class="text-muted">
+                Equated Monthly Installment
+              </small>
+            </div>
+
+            <!-- Total Payment -->
+            <div class="mb-4 p-3 bg-info bg-opacity-10 rounded">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="fw-semibold text-info">Total Payment</span>
+                <i class="fas fa-dollar-sign text-info"></i>
+              </div>
+              <h4 class="text-info fw-bold mb-0">
+                ${{ (calculatedEMI * emiForm.get('totalTenure')?.value) | number:'1.2-2' }}
+              </h4>
+              <small class="text-muted">
+                Over {{ emiForm.get('totalTenure')?.value }} months
+              </small>
+            </div>
+
+            <!-- Total Interest -->
+            <div class="mb-4 p-3 bg-warning bg-opacity-10 rounded">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="fw-semibold text-warning">Total Interest</span>
+                <i class="fas fa-percentage text-warning"></i>
+              </div>
+              <h4 class="text-warning fw-bold mb-0">
+                ${{ ((calculatedEMI * emiForm.get('totalTenure')?.value) - emiForm.get('principal')?.value) | number:'1.2-2' }}
+              </h4>
+              <small class="text-muted">
+                Interest paid over loan term
+              </small>
+            </div>
+
+            <!-- Progress -->
+            <div class="p-3 bg-light rounded" *ngIf="emiForm.get('tenuresPaid')?.value > 0">
+              <h6 class="fw-semibold mb-3">Payment Progress</h6>
+              <div class="progress mb-2" style="height: 12px;">
+                <div class="progress-bar bg-success" 
+                     [style.width]="(emiForm.get('tenuresPaid')?.value / emiForm.get('totalTenure')?.value * 100) + '%'"
+                     role="progressbar">
+                </div>
+              </div>
+              <div class="d-flex justify-content-between">
+                <small class="text-muted">{{ emiForm.get('tenuresPaid')?.value }} paid</small>
+                <small class="text-muted">{{ emiForm.get('totalTenure')?.value - emiForm.get('tenuresPaid')?.value }} remaining</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EMI Formula Card -->
+      <div class="card shadow-sm">
+        <div class="card-header bg-light py-3">
+          <h5 class="card-title mb-0 fw-semibold">
+            <i class="fas fa-info-circle text-muted me-2"></i>
+            EMI Formula
+          </h5>
+        </div>
+        <div class="card-body">
+          <p class="small text-muted mb-2">
+            <strong>EMI = [P × r × (1+r)^n] / [(1+r)^n - 1]</strong>
+          </p>
+          <p class="small text-muted mb-0">
+            Where:<br>
+            • P = Principal loan amount<br>
+            • r = Monthly interest rate (annual rate ÷ 12 ÷ 100)<br>
+            • n = Loan tenure in months
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

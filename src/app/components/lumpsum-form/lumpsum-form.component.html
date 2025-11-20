@@ -1,0 +1,328 @@
+<div class="container-fluid py-4">
+  <!-- Header Section -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h1 class="h3 mb-1">
+            <i class="fas fa-piggy-bank text-primary me-2"></i>
+            {{ isEdit ? 'Edit Lump Sum Investment' : 'Create New Lump Sum Investment' }}
+          </h1>
+          <p class="text-muted mb-0">
+            {{ isEdit ? 'Update lump sum investment details and projections' : 'Calculate future value of a one-time investment with compound interest' }}
+          </p>
+        </div>
+        <button class="btn btn-outline-secondary" (click)="onCancel()">
+          <i class="fas fa-arrow-left me-2"></i>Back to List
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alert Messages -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i>{{ errorMessage }}
+        <button type="button" class="btn-close" (click)="errorMessage = ''"></button>
+      </div>
+      
+      <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle me-2"></i>{{ successMessage }}
+        <button type="button" class="btn-close" (click)="successMessage = ''"></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Main Form Column -->
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-header bg-light py-3">
+          <h5 class="card-title mb-0 fw-semibold">
+            <i class="fas fa-edit text-muted me-2"></i>
+            Investment Details
+          </h5>
+        </div>
+        <div class="card-body">
+          <!-- Loading State -->
+          <div *ngIf="isLoading && isEdit" class="text-center py-5">
+            <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+              <span class="visually-hidden">Loading investment...</span>
+            </div>
+            <p class="text-muted">Loading investment details...</p>
+          </div>
+
+          <form *ngIf="!isLoading || !isEdit" [formGroup]="lumpSumForm" (ngSubmit)="onSubmit()">
+            <!-- Investment Name -->
+            <div class="row mb-4">
+              <div class="col-md-12">
+                <label for="investmentName" class="form-label fw-semibold">
+                  Investment Name <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  class="form-control form-control-lg"
+                  id="investmentName"
+                  formControlName="investmentName"
+                  placeholder="e.g., Stock Portfolio, Mutual Fund, Fixed Deposit, Real Estate"
+                  [class.is-invalid]="investmentName?.invalid && (investmentName?.dirty || investmentName?.touched)"
+                >
+                <div *ngIf="investmentName?.invalid && (investmentName?.dirty || investmentName?.touched)" class="invalid-feedback">
+                  <div *ngIf="investmentName?.errors?.['required']">Investment name is required</div>
+                  <div *ngIf="investmentName?.errors?.['maxlength']">Name must be less than 100 characters</div>
+                </div>
+                <div class="form-text">Give your investment a clear, descriptive name</div>
+              </div>
+            </div>
+
+            <!-- Principal Amount -->
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <label for="principalAmount" class="form-label fw-semibold">
+                  Principal Amount ($) <span class="text-danger">*</span>
+                </label>
+                <div class="input-group">
+                  <span class="input-group-text">$</span>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="principalAmount"
+                    formControlName="principalAmount"
+                    min="100"
+                    max="100000000"
+                    step="100"
+                    placeholder="10000"
+                    [class.is-invalid]="principalAmount?.invalid && (principalAmount?.dirty || principalAmount?.touched)"
+                  >
+                </div>
+                <div *ngIf="principalAmount?.invalid && (principalAmount?.dirty || principalAmount?.touched)" class="invalid-feedback">
+                  <div *ngIf="principalAmount?.errors?.['required']">Principal amount is required</div>
+                  <div *ngIf="principalAmount?.errors?.['min']">Amount must be at least $100</div>
+                  <div *ngIf="principalAmount?.errors?.['max']">Amount cannot exceed $100,000,000</div>
+                </div>
+                <div class="form-text">Initial investment amount</div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="duration" class="form-label fw-semibold">
+                  Investment Duration (Years) <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="duration"
+                  formControlName="duration"
+                  min="1"
+                  max="50"
+                  placeholder="5"
+                  [class.is-invalid]="duration?.invalid && (duration?.dirty || duration?.touched)"
+                >
+                <div *ngIf="duration?.invalid && (duration?.dirty || duration?.touched)" class="invalid-feedback">
+                  <div *ngIf="duration?.errors?.['required']">Investment duration is required</div>
+                  <div *ngIf="duration?.errors?.['min']">Duration must be at least 1 year</div>
+                  <div *ngIf="duration?.errors?.['max']">Duration cannot exceed 50 years</div>
+                </div>
+                <div class="form-text">Number of years for investment growth</div>
+              </div>
+            </div>
+
+            <!-- Expected Return -->
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <label for="expectedReturn" class="form-label fw-semibold">
+                  Expected Annual Return (%) <span class="text-danger">*</span>
+                </label>
+                <div class="input-group">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="expectedReturn"
+                    formControlName="expectedReturn"
+                    min="1"
+                    max="50"
+                    step="0.1"
+                    placeholder="8.0"
+                    [class.is-invalid]="expectedReturn?.invalid && (expectedReturn?.dirty || expectedReturn?.touched)"
+                  >
+                  <span class="input-group-text">%</span>
+                </div>
+                <div *ngIf="expectedReturn?.invalid && (expectedReturn?.dirty || expectedReturn?.touched)" class="invalid-feedback">
+                  <div *ngIf="expectedReturn?.errors?.['required']">Expected return is required</div>
+                  <div *ngIf="expectedReturn?.errors?.['min']">Return must be at least 1%</div>
+                  <div *ngIf="expectedReturn?.errors?.['max']">Return cannot exceed 50%</div>
+                </div>
+                <div class="form-text">Expected annual rate of return</div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="row mt-4">
+              <div class="col-12">
+                <div class="d-flex gap-2 justify-content-end">
+                  <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">
+                    <i class="fas fa-times me-2"></i>Cancel
+                  </button>
+                  <button 
+                    type="submit" 
+                    class="btn btn-primary"
+                    [disabled]="isLoading || lumpSumForm.invalid"
+                  >
+                    <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </span>
+                    <i *ngIf="!isLoading" class="fas fa-save me-2"></i>
+                    {{ isEdit ? 'Update Investment' : 'Create Investment' }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calculation Results Sidebar -->
+    <div class="col-lg-4">
+      <!-- Projection Results Card -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-light py-3">
+          <h5 class="card-title mb-0 fw-semibold">
+            <i class="fas fa-calculator text-muted me-2"></i>
+            Investment Projection
+          </h5>
+        </div>
+        <div class="card-body">
+          <div *ngIf="!(lumpSumForm.get('principalAmount')?.value && lumpSumForm.get('duration')?.value && lumpSumForm.get('expectedReturn')?.value)" 
+                class="text-center py-4">
+            <i class="fas fa-calculator fa-2x text-muted mb-3 opacity-50"></i>
+            <p class="text-muted mb-0">Enter investment details to see projections</p>
+          </div>
+
+          <div *ngIf="calculatedValues.futureValue" class="calculation-results">
+            <!-- Future Value -->
+            <div class="mb-4 p-3 bg-success bg-opacity-10 rounded">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="fw-semibold text-success">Future Value</span>
+                <i class="fas fa-rocket text-success"></i>
+              </div>
+              <h3 class="text-success fw-bold mb-0">
+                ${{ calculatedValues.futureValue | number:'1.2-2' }}
+              </h3>
+              <small class="text-muted">
+                After {{ lumpSumForm.get('duration')?.value }} years
+              </small>
+            </div>
+
+            <!-- Total Interest -->
+            <div class="mb-4 p-3 bg-primary bg-opacity-10 rounded">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="fw-semibold text-primary">Total Interest</span>
+                <i class="fas fa-chart-line text-primary"></i>
+              </div>
+              <h4 class="text-primary fw-bold mb-0">
+                ${{ calculatedValues.totalInterest | number:'1.2-2' }}
+              </h4>
+              <small class="text-muted">
+                Earnings from investment
+              </small>
+            </div>
+
+            <!-- Return Percentage -->
+            <div class="mb-4 p-3 bg-info bg-opacity-10 rounded">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="fw-semibold text-info">Total Return</span>
+                <i class="fas fa-percentage text-info"></i>
+              </div>
+              <h4 class="text-info fw-bold mb-0">
+                {{ calculatedValues.returnPercentage | number:'1.2-2' }}%
+              </h4>
+              <small class="text-muted">
+                Percentage gain on principal
+              </small>
+            </div>
+
+            <!-- CAGR -->
+            <div class="p-3 bg-warning bg-opacity-10 rounded">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="fw-semibold text-warning">CAGR</span>
+                <i class="fas fa-chart-bar text-warning"></i>
+              </div>
+              <h4 class="text-warning fw-bold mb-0">
+                {{ calculatedValues.cagr | number:'1.2-2' }}%
+              </h4>
+              <small class="text-muted">
+                Compound Annual Growth Rate
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Growth Visualization Card -->
+      <div class="card shadow-sm" *ngIf="calculatedValues.futureValue">
+        <div class="card-header bg-light py-3">
+          <h5 class="card-title mb-0 fw-semibold">
+            <i class="fas fa-chart-bar text-muted me-2"></i>
+            Growth Visualization
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="growth-comparison">
+            <div class="d-flex justify-content-between align-items-center mb-3 p-3 bg-light rounded">
+              <div class="text-center">
+                <small class="text-muted d-block">Principal</small>
+                <strong class="text-primary">${{ lumpSumForm.get('principalAmount')?.value | number:'1.2-2' }}</strong>
+              </div>
+              <div class="text-center">
+                <i class="fas fa-arrow-right text-muted"></i>
+              </div>
+              <div class="text-center">
+                <small class="text-muted d-block">After {{ lumpSumForm.get('duration')?.value }} years</small>
+                <strong class="text-success">${{ calculatedValues.futureValue | number:'1.2-2' }}</strong>
+              </div>
+            </div>
+            
+            <div class="progress mb-2" style="height: 20px;">
+              <div class="progress-bar bg-success" 
+                   role="progressbar"
+                   [style.width]="'100%'"
+                   [attr.aria-valuenow]="calculatedValues.returnPercentage"
+                   aria-valuemin="0"
+                   aria-valuemax="100">
+                <span class="fw-semibold">{{ calculatedValues.returnPercentage | number:'1.2-2' }}% Return</span>
+              </div>
+            </div>
+            
+            <div class="text-center">
+              <small class="text-muted">
+                Compounding at {{ lumpSumForm.get('expectedReturn')?.value }}% annually
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formula Info Card -->
+      <div class="card shadow-sm">
+        <div class="card-header bg-light py-3">
+          <h5 class="card-title mb-0 fw-semibold">
+            <i class="fas fa-info-circle text-muted me-2"></i>
+            Calculation Formula
+          </h5>
+        </div>
+        <div class="card-body">
+          <p class="small text-muted mb-2">
+            <strong>Future Value = Principal × (1 + Rate)<sup>Time</sup></strong>
+          </p>
+          <p class="small text-muted mb-0">
+            Where:<br>
+            • Rate = Expected Return / 100<br>
+            • Time = Duration in years<br>
+            • Interest is compounded annually
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

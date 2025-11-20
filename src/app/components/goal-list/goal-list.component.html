@@ -1,0 +1,388 @@
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="h3 mb-1">
+                        <i class="fas fa-bullseye text-primary me-2"></i>Financial Goals
+                    </h1>
+                    <p class="text-muted mb-0">Track and manage your financial objectives</p>
+                </div>
+                <div class="user-info">
+                    <span>Welcome, {{ getCurrentUser()?.username }}!</span>
+                </div>
+                <button class="btn btn-primary" routerLink="/goals/new">
+                    <i class="fas fa-plus me-2"></i>Add New Goal
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Alert -->
+    <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i>{{ errorMessage }}
+        <button type="button" class="btn-close" (click)="errorMessage = ''"></button>
+    </div>
+
+    <!-- Summary Cards -->
+    <div *ngIf="summary" class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-start border-primary border-4 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h6 class="text-muted fw-semibold">Total Goals</h6>
+                            <h4 class="mb-0 fw-bold text-primary">{{ summary.totalGoals }}</h4>
+                            <small class="text-muted">Across all categories</small>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-bullseye text-primary fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-start border-success border-4 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h6 class="text-muted fw-semibold">Total Target Amount</h6>
+                            <h4 class="mb-0 fw-bold text-success">{{ summary.totalTargetAmount |
+                                currency:'USD':'symbol':'1.0-0' }}</h4>
+                            <small class="text-muted">Combined target</small>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-dollar-sign text-success fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-start border-info border-4 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h6 class="text-muted fw-semibold">Average Duration</h6>
+                            <h4 class="mb-0 fw-bold text-info">{{ summary.averageDuration | number:'1.1-1' }} yrs</h4>
+                            <small class="text-muted">Mean goal duration</small>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-clock text-info fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-start border-warning border-4 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h6 class="text-muted fw-semibold">Short Term Goals</h6>
+                            <h4 class="mb-0 fw-bold text-warning">{{ summary.shortTermGoals }}</h4>
+                            <small class="text-muted">Immediate objectives</small>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-bolt text-warning fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Row -->
+    <div class="row">
+        <!-- Goals List Column -->
+        <div class="col-lg-8">
+            <!-- Filters Card -->
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-light py-3">
+                    <h5 class="card-title mb-0 fw-semibold">
+                        <i class="fas fa-filter text-muted me-2"></i>Filters & Search
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-4">
+                            <label for="categoryFilter" class="form-label fw-semibold">Category</label>
+                            <select class="form-select" id="categoryFilter" [(ngModel)]="selectedCategory">
+                                <option value="">All Categories</option>
+                                <option *ngFor="let category of categories" [value]="category">
+                                    {{ getCategoryDisplayName(category) }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="durationFilter" class="form-label fw-semibold">Max Duration: {{ maxDuration }}
+                                years</label>
+                            <input type="range" class="form-range" id="durationFilter" min="1" max="50"
+                                [(ngModel)]="maxDuration">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="amountFilter" class="form-label fw-semibold">Max Amount: {{ maxAmount |
+                                currency:'USD':'symbol':'1.0-0' }}</label>
+                            <input type="range" class="form-range" id="amountFilter" min="1000" max="1000000"
+                                step="1000" [(ngModel)]="maxAmount">
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <button class="btn btn-primary me-2" (click)="applyFilters()">
+                                <i class="fas fa-search me-1"></i>Apply Filters
+                            </button>
+                            <button class="btn btn-outline-secondary" (click)="clearFilters()">
+                                <i class="fas fa-times me-1"></i>Clear Filters
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Goals List Card -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-light py-3 d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0 fw-semibold">
+                        <i class="fas fa-list text-muted me-2"></i>Your Goals
+                        <span class="badge bg-primary ms-2">{{ goals.length }}</span>
+                    </h5>
+                    <div class="d-flex align-items-center">
+                        <div class="spinner-border spinner-border-sm text-primary me-2" role="status" *ngIf="isLoading">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <span class="text-muted small" *ngIf="!isLoading">{{ goals.length }} goals</span>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <!-- Loading State -->
+                    <div *ngIf="isLoading" class="text-center py-5">
+                        <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+                            <span class="visually-hidden">Loading goals...</span>
+                        </div>
+                        <p class="text-muted">Loading your financial goals...</p>
+                    </div>
+
+                    <!-- Empty State -->
+                    <div *ngIf="!isLoading && goals.length === 0" class="text-center py-5">
+                        <i class="fas fa-bullseye fa-4x text-muted mb-3 opacity-50"></i>
+                        <h4 class="text-muted mb-3">No goals found</h4>
+                        <p class="text-muted mb-4">Start planning your financial future by creating your first goal.</p>
+                        <button class="btn btn-primary btn-lg" routerLink="/goals/new">
+                            <i class="fas fa-plus me-2"></i>Create Your First Goal
+                        </button>
+                    </div>
+
+                    <!-- Goals List -->
+                    <div *ngIf="!isLoading && goals.length > 0" class="list-group list-group-flush">
+                        <div *ngFor="let goal of goals; let i = index" class="list-group-item border-0 p-4"
+                            [class.border-bottom]="i < goals.length - 1" [class.bg-light]="i % 2 === 0">
+                            <div class="row align-items-center">
+                                <div class="col-lg-8">
+                                    <div class="d-flex align-items-start">
+                                        <div class="flex-shrink-0 me-3">
+                                            <span
+                                                class="badge bg-{{ getCategoryColor(goal.category) }} rounded-circle p-2 d-flex align-items-center justify-content-center"
+                                                style="width: 40px; height: 40px;">
+                                                <i class="fas {{ getCategoryIcon(goal.category) }} fa-sm"></i>
+                                            </span>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h5 class="mb-2 fw-semibold text-dark">{{ goal.name }}</h5>
+
+                                            <p class="text-muted mb-3" *ngIf="goal.notes">{{ goal.notes }}</p>
+
+                                            <div class="d-flex flex-wrap gap-2 mb-3">
+                                                <span class="badge bg-light text-dark border">
+                                                    <i
+                                                        class="fas fa-tag me-1 text-{{ getCategoryColor(goal.category) }}"></i>
+                                                    {{ getCategoryDisplayName(goal.category) }}
+                                                </span>
+                                                <span class="badge bg-light text-dark border" *ngIf="goal.targetAmount">
+                                                    <i class="fas fa-dollar-sign me-1 text-success"></i>
+                                                    {{ goal.targetAmount | currency:'USD':'symbol':'1.0-0' }}
+                                                </span>
+                                                <span class="badge bg-light text-dark border" *ngIf="goal.duration">
+                                                    <i class="fas fa-clock me-1 text-info"></i>
+                                                    {{ goal.duration }} years
+                                                </span>
+                                                <span class="badge bg-light text-dark border"
+                                                    *ngIf="goal.inflationAdjustedAmount">
+                                                    <i class="fas fa-chart-line me-1 text-warning"></i>
+                                                    {{ goal.inflationAdjustedAmount | currency:'USD':'symbol':'1.0-0' }}
+                                                    (adjusted)
+                                                </span>
+                                            </div>
+
+                                            <!-- Monthly Savings Calculation -->
+                                            <div *ngIf="goal.targetAmount && goal.duration"
+                                                class="bg-primary bg-opacity-10 p-3 rounded">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span class="fw-semibold text-primary">Monthly Savings
+                                                        Required:</span>
+                                                    <span class="h5 mb-0 fw-bold text-primary">
+                                                        {{ calculateMonthlySavings(goal) |
+                                                        currency:'USD':'symbol':'1.0-0' }}
+                                                    </span>
+                                                </div>
+                                                <small class="text-muted">Based on {{ goal.duration }} year
+                                                    timeline</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 mt-3 mt-lg-0">
+                                    <div class="d-flex flex-column gap-2">
+                                        <div class="d-flex gap-2 justify-content-lg-end">
+                                            <button class="btn btn-outline-primary btn-sm"
+                                                [routerLink]="['/goals', goal.id, 'edit']"
+                                                [title]="'Edit ' + goal.name">
+                                                <i class="fas fa-edit me-1"></i>Edit
+                                            </button>
+                                            <button class="btn btn-outline-info btn-sm"
+                                                [routerLink]="['/goals', goal.id]"
+                                                [title]="'View details of ' + goal.name">
+                                                <i class="fas fa-eye me-1"></i>View
+                                            </button>
+                                            <button class="btn btn-outline-danger btn-sm" (click)="deleteGoal(goal.id!)"
+                                                [title]="'Delete ' + goal.name">
+                                                <i class="fas fa-trash me-1"></i>Delete
+                                            </button>
+                                        </div>
+
+                                        <div class="text-lg-end">
+                                            <small class="text-muted">
+                                                <i class="fas fa-calendar me-1"></i>
+                                                Created: {{ goal.createdAt | date:'MMM d, y' }}
+                                            </small>
+                                            <br>
+                                            <small class="text-muted"
+                                                *ngIf="goal.updatedAt && goal.updatedAt !== goal.createdAt">
+                                                <i class="fas fa-sync me-1"></i>
+                                                Updated: {{ goal.updatedAt | date:'MMM d, y' }}
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Column -->
+        <div class="col-lg-4">
+            <!-- Category Distribution Card -->
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-light py-3">
+                    <h5 class="card-title mb-0 fw-semibold">
+                        <i class="fas fa-chart-pie text-muted me-2"></i>Goals by Category
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div *ngIf="getCategoryStats().length === 0" class="text-center py-4">
+                        <i class="fas fa-chart-pie fa-2x text-muted mb-3 opacity-50"></i>
+                        <p class="text-muted mb-0">No category data available</p>
+                    </div>
+
+                    <div *ngFor="let stat of getCategoryStats()" class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div class="d-flex align-items-center">
+                                <i
+                                    class="fas {{ getCategoryIcon(stat.category) }} text-{{ getCategoryColor(stat.category) }} me-2"></i>
+                                <span class="fw-semibold">{{ getCategoryDisplayName(stat.category) }}</span>
+                            </div>
+                            <span class="badge bg-{{ getCategoryColor(stat.category) }}">{{ stat.count }}</span>
+                        </div>
+
+                        <div class="progress mb-2" style="height: 10px;">
+                            <div class="progress-bar bg-{{ getCategoryColor(stat.category) }}"
+                                [style.width]="stat.percentage + '%'" role="progressbar"
+                                [attr.aria-valuenow]="stat.percentage" aria-valuemin="0" aria-valuemax="100">
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between small">
+                            <span class="text-muted">{{ stat.percentage | number:'1.1-1' }}% of goals</span>
+                            <span class="fw-semibold text-dark">{{ stat.amount | currency:'USD':'symbol':'1.0-0'
+                                }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upcoming Goals Card -->
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-light py-3">
+                    <h5 class="card-title mb-0 fw-semibold">
+                        <i class="fas fa-calendar-alt text-muted me-2"></i>Upcoming Goals
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div *ngIf="upcomingGoals.length === 0" class="text-center py-3">
+                        <i class="fas fa-calendar fa-2x text-muted mb-3 opacity-50"></i>
+                        <p class="text-muted mb-0">No upcoming goals in the next 5 years</p>
+                    </div>
+
+                    <div *ngFor="let upcomingGoal of upcomingGoals"
+                        class="border-start border-3 border-{{ getCategoryColor(upcomingGoal.category) }} ps-3 mb-3 py-2">
+                        <h6 class="fw-semibold mb-1 text-dark">{{ upcomingGoal.name }}</h6>
+                        <!-- <p class="text-muted small mb-2" *ngIf="upcomingGoal.description">{{ upcomingGoal.description }}</p> -->
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <small class="text-muted d-block">
+                                    <i class="fas fa-dollar-sign me-1"></i>
+                                    {{ upcomingGoal.targetAmount | currency:'USD':'symbol':'1.0-0' }}
+                                </small>
+                                <small class="text-muted">
+                                    <i class="fas fa-calendar me-1"></i>
+                                    {{ upcomingGoal.duration }} years
+                                </small>
+                            </div>
+                            <span class="badge bg-{{ getCategoryColor(upcomingGoal.category) }} small">
+                                {{ getCategoryDisplayName(upcomingGoal.category) }}
+                            </span>
+                        </div>
+                        <div class="mt-2 bg-light p-2 rounded">
+                            <small class="text-dark fw-semibold">
+                                Monthly: {{ upcomingGoal.monthlySavingsRequired | currency:'USD':'symbol':'1.0-0' }}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions Card -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-light py-3">
+                    <h5 class="card-title mb-0 fw-semibold">
+                        <i class="fas fa-bolt text-muted me-2"></i>Quick Actions
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-outline-primary text-start" routerLink="/goals/new">
+                            <i class="fas fa-plus me-2"></i>Add New Goal
+                        </button>
+                        <button class="btn btn-outline-success text-start" routerLink="/goals/analysis">
+                            <i class="fas fa-chart-bar me-2"></i>View Analysis
+                        </button>
+                        <button class="btn btn-outline-info text-start" (click)="loadGoals()">
+                            <i class="fas fa-sync-alt me-2"></i>Refresh Data
+                        </button>
+                        <button class="btn btn-outline-warning text-start" (click)="clearFilters()">
+                            <i class="fas fa-filter me-2"></i>Clear All Filters
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

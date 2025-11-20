@@ -1,6 +1,6 @@
 // services/auth.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { User } from '../models/user.model';
@@ -67,4 +67,16 @@ export class AuthService {
   getCurrentUser(): User | null {
     return this.currentUserSubject.value;
   }
+
+  getAuthHeaders(): HttpHeaders {
+    const token = this.getToken;
+    if (token) {
+      return new HttpHeaders({
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      });
+    }
+    return new HttpHeaders({ 'Content-Type': 'application/json' });
+  }
+  
 }

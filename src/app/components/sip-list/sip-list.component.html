@@ -1,0 +1,191 @@
+<div class="container-fluid py-4">
+  <!-- Header Section -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h1 class="h3 mb-1">
+            <i class="fas fa-calendar-plus text-primary me-2"></i>Systematic Investment Plans
+          </h1>
+          <p class="text-muted mb-0">Manage and track your monthly investment plans</p>
+        </div>
+        <button class="btn btn-primary" routerLink="/sips/new">
+          <i class="fas fa-plus me-2"></i>Add SIP
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error Alert -->
+  <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+    <i class="fas fa-exclamation-triangle me-2"></i>{{ errorMessage }}
+    <button type="button" class="btn-close" (click)="errorMessage = ''"></button>
+  </div>
+
+  <!-- Summary Cards -->
+  <div *ngIf="summary" class="row mb-4">
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-start border-primary border-4 shadow-sm h-100">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="flex-grow-1">
+              <h6 class="text-muted fw-semibold">Total SIPs</h6>
+              <h4 class="mb-0 fw-bold text-primary">{{ summary.totalSIPs }}</h4>
+              <small class="text-muted">Active investment plans</small>
+            </div>
+            <div class="flex-shrink-0">
+              <i class="fas fa-chart-pie text-primary fa-2x opacity-75"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-start border-success border-4 shadow-sm h-100">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="flex-grow-1">
+              <h6 class="text-muted fw-semibold">Monthly Investment</h6>
+              <h4 class="mb-0 fw-bold text-success">${{ summary.totalMonthlyInvestment | number:'1.2-2' }}</h4>
+              <small class="text-muted">Total monthly commitment</small>
+            </div>
+            <div class="flex-shrink-0">
+              <i class="fas fa-dollar-sign text-success fa-2x opacity-75"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-start border-info border-4 shadow-sm h-100">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="flex-grow-1">
+              <h6 class="text-muted fw-semibold">Future Value</h6>
+              <h4 class="mb-0 fw-bold text-info">${{ summary.totalFutureValue | number:'1.2-2' }}</h4>
+              <small class="text-muted">Total projected value</small>
+            </div>
+            <div class="flex-shrink-0">
+              <i class="fas fa-rocket text-info fa-2x opacity-75"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-start border-warning border-4 shadow-sm h-100">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="flex-grow-1">
+              <h6 class="text-muted fw-semibold">Expected Interest</h6>
+              <h4 class="mb-0 fw-bold text-warning">${{ summary.totalExpectedInterest | number:'1.2-2' }}</h4>
+              <small class="text-muted">Total expected earnings</small>
+            </div>
+            <div class="flex-shrink-0">
+              <i class="fas fa-percentage text-warning fa-2x opacity-75"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIP Investments Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow-sm">
+        <div class="card-header bg-light py-3 d-flex justify-content-between align-items-center">
+          <h5 class="card-title mb-0 fw-semibold">
+            <i class="fas fa-list text-muted me-2"></i>All SIP Investments
+            <span class="badge bg-primary ms-2">{{ sips.length }}</span>
+          </h5>
+          <div class="d-flex align-items-center">
+            <div class="spinner-border spinner-border-sm text-primary me-2" role="status" *ngIf="isLoading">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <span class="text-muted small" *ngIf="!isLoading">{{ sips.length }} SIPs</span>
+          </div>
+        </div>
+        <div class="card-body p-0">
+          <!-- Loading State -->
+          <div *ngIf="isLoading" class="text-center py-5">
+            <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+              <span class="visually-hidden">Loading SIPs...</span>
+            </div>
+            <p class="text-muted">Loading SIP investments...</p>
+          </div>
+
+          <!-- Empty State -->
+          <div *ngIf="!isLoading && sips.length === 0" class="text-center py-5">
+            <i class="fas fa-calendar-plus fa-4x text-muted mb-3 opacity-50"></i>
+            <h4 class="text-muted mb-3">No SIP investments found</h4>
+            <p class="text-muted mb-4">Start building your investment portfolio by adding your first SIP.</p>
+            <button class="btn btn-primary btn-lg" routerLink="/sips/new">
+              <i class="fas fa-plus me-2"></i>Add SIP Investment
+            </button>
+          </div>
+
+          <!-- SIP Investments Table -->
+          <div *ngIf="!isLoading && sips.length > 0" class="table-responsive">
+            <table class="table table-hover mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th scope="col" class="ps-4">Investment Name</th>
+                  <th scope="col">Monthly Investment</th>
+                  <th scope="col">Duration</th>
+                  <th scope="col">Expected Return</th>
+                  <th scope="col">Total Investment</th>
+                  <th scope="col">Future Value</th>
+                  <th scope="col">Total Interest</th>
+                  <th scope="col">Return %</th>
+                  <th scope="col" class="text-end pe-4">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let sip of sips">
+                  <td class="ps-4 fw-semibold">{{ sip.investmentOnName }}</td>
+                  <td>${{ sip.monthlyInvestment | number:'1.2-2' }}</td>
+                  <td>
+                    <span class="badge bg-info bg-opacity-20 text-info">
+                      {{ sip.duration }} months ({{ getDurationYears(sip.duration) }} years)
+                    </span>
+                  </td>
+                  <td>
+                    <span class="badge bg-warning bg-opacity-20 text-warning">
+                      {{ sip.expectedReturn }}%
+                    </span>
+                  </td>
+                  <td>${{ sip.totalInvestment | number:'1.2-2' }}</td>
+                  <td class="fw-semibold text-success">${{ sip.futureValue | number:'1.2-2' }}</td>
+                  <td class="fw-semibold text-success">${{ sip.totalInterestPaid | number:'1.2-2' }}</td>
+                  <td>
+                    <span class="badge bg-success bg-opacity-20 text-success">
+                      {{ calculateReturnPercentage(sip) | number:'1.2-2' }}%
+                    </span>
+                  </td>
+                  <td class="text-end pe-4">
+                    <div class="btn-group btn-group-sm">
+                      <button class="btn btn-outline-primary" 
+                              [routerLink]="['/sips/edit', sip.id]"
+                              title="Edit">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="btn btn-outline-danger" 
+                              (click)="deleteSIP(sip.id!)"
+                              title="Delete">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

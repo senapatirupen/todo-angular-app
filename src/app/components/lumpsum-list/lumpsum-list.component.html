@@ -1,0 +1,238 @@
+<div class="container-fluid py-4">
+  <!-- Header Section -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h1 class="h3 mb-1">
+            <i class="fas fa-piggy-bank text-primary me-2"></i>Lump Sum Investments
+          </h1>
+          <p class="text-muted mb-0">Manage and track your one-time investment calculations</p>
+        </div>
+        <button class="btn btn-primary" routerLink="/lump-sums/new">
+          <i class="fas fa-plus me-2"></i>Add Lump Sum
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error Alert -->
+  <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+    <i class="fas fa-exclamation-triangle me-2"></i>{{ errorMessage }}
+    <button type="button" class="btn-close" (click)="errorMessage = ''"></button>
+  </div>
+
+  <!-- Summary Cards -->
+  <div *ngIf="summary" class="row mb-4">
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-start border-primary border-4 shadow-sm h-100">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="flex-grow-1">
+              <h6 class="text-muted fw-semibold">Total Investments</h6>
+              <h4 class="mb-0 fw-bold text-primary">{{ summary.totalLumpSums }}</h4>
+              <small class="text-muted">Active investments</small>
+            </div>
+            <div class="flex-shrink-0">
+              <i class="fas fa-chart-pie text-primary fa-2x opacity-75"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-start border-success border-4 shadow-sm h-100">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="flex-grow-1">
+              <h6 class="text-muted fw-semibold">Total Principal</h6>
+              <h4 class="mb-0 fw-bold text-success">${{ summary.totalPrincipal | number:'1.2-2' }}</h4>
+              <small class="text-muted">Total invested amount</small>
+            </div>
+            <div class="flex-shrink-0">
+              <i class="fas fa-dollar-sign text-success fa-2x opacity-75"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-start border-info border-4 shadow-sm h-100">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="flex-grow-1">
+              <h6 class="text-muted fw-semibold">Future Value</h6>
+              <h4 class="mb-0 fw-bold text-info">${{ summary.totalFutureValue | number:'1.2-2' }}</h4>
+              <small class="text-muted">Projected value</small>
+            </div>
+            <div class="flex-shrink-0">
+              <i class="fas fa-rocket text-info fa-2x opacity-75"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-start border-warning border-4 shadow-sm h-100">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="flex-grow-1">
+              <h6 class="text-muted fw-semibold">Total Interest</h6>
+              <h4 class="mb-0 fw-bold text-warning">${{ summary.totalInterest | number:'1.2-2' }}</h4>
+              <small class="text-muted">Expected earnings</small>
+            </div>
+            <div class="flex-shrink-0">
+              <i class="fas fa-percentage text-warning fa-2x opacity-75"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Performers Section -->
+  <div *ngIf="topPerformers.length > 0" class="row mb-4">
+    <div class="col-12">
+      <div class="card shadow-sm">
+        <div class="card-header bg-light py-3">
+          <h5 class="card-title mb-0 fw-semibold">
+            <i class="fas fa-trophy text-warning me-2"></i>Top Performing Investments
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div *ngFor="let performer of topPerformers" class="col-xl-4 col-md-6">
+              <div class="card h-100 border-0 bg-light">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-start mb-3">
+                    <h6 class="card-title fw-semibold mb-0">{{ performer.investmentName }}</h6>
+                    <span class="badge bg-success">{{ performer.returnPercentage | number:'1.2-2' }}%</span>
+                  </div>
+                  <div class="row g-2 mb-3">
+                    <div class="col-6">
+                      <small class="text-muted">Principal</small>
+                      <div class="fw-semibold">${{ performer.principalAmount | number:'1.2-2' }}</div>
+                    </div>
+                    <div class="col-6">
+                      <small class="text-muted">Future Value</small>
+                      <div class="fw-semibold text-success">${{ performer.futureValue | number:'1.2-2' }}</div>
+                    </div>
+                  </div>
+                  <div class="row g-2">
+                    <div class="col-6">
+                      <small class="text-muted">Duration</small>
+                      <div class="fw-semibold">{{ performer.duration }} years</div>
+                    </div>
+                    <div class="col-6">
+                      <small class="text-muted">Total Return</small>
+                      <div class="fw-bold text-success">${{ performer.totalReturn | number:'1.2-2' }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lump Sum Investments Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow-sm">
+        <div class="card-header bg-light py-3 d-flex justify-content-between align-items-center">
+          <h5 class="card-title mb-0 fw-semibold">
+            <i class="fas fa-list text-muted me-2"></i>All Lump Sum Investments
+            <span class="badge bg-primary ms-2">{{ lumpSums.length }}</span>
+          </h5>
+          <div class="d-flex align-items-center">
+            <div class="spinner-border spinner-border-sm text-primary me-2" role="status" *ngIf="isLoading">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <span class="text-muted small" *ngIf="!isLoading">{{ lumpSums.length }} investments</span>
+          </div>
+        </div>
+        <div class="card-body p-0">
+          <!-- Loading State -->
+          <div *ngIf="isLoading" class="text-center py-5">
+            <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+              <span class="visually-hidden">Loading lump sum investments...</span>
+            </div>
+            <p class="text-muted">Loading lump sum investments...</p>
+          </div>
+
+          <!-- Empty State -->
+          <div *ngIf="!isLoading && lumpSums.length === 0" class="text-center py-5">
+            <i class="fas fa-piggy-bank fa-4x text-muted mb-3 opacity-50"></i>
+            <h4 class="text-muted mb-3">No lump sum investments found</h4>
+            <p class="text-muted mb-4">Start tracking your investments by adding your first lump sum calculation.</p>
+            <button class="btn btn-primary btn-lg" routerLink="/lump-sums/new">
+              <i class="fas fa-plus me-2"></i>Add Lump Sum Investment
+            </button>
+          </div>
+
+          <!-- Lump Sum Investments Table -->
+          <div *ngIf="!isLoading && lumpSums.length > 0" class="table-responsive">
+            <table class="table table-hover mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th scope="col" class="ps-4">Investment Name</th>
+                  <th scope="col">Principal Amount</th>
+                  <th scope="col">Duration</th>
+                  <th scope="col">Expected Return</th>
+                  <th scope="col">Future Value</th>
+                  <th scope="col">Total Interest</th>
+                  <th scope="col">Return %</th>
+                  <th scope="col">CAGR</th>
+                  <th scope="col" class="text-end pe-4">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let lumpSum of lumpSums">
+                  <td class="ps-4 fw-semibold">{{ lumpSum.investmentName }}</td>
+                  <td>${{ lumpSum.principalAmount | number:'1.2-2' }}</td>
+                  <td>{{ lumpSum.duration }} years</td>
+                  <td>
+                    <span class="badge bg-info bg-opacity-20 text-info">
+                      {{ lumpSum.expectedReturn }}%
+                    </span>
+                  </td>
+                  <td class="fw-semibold text-success">${{ lumpSum.futureValue | number:'1.2-2' }}</td>
+                  <td class="fw-semibold text-success">${{ lumpSum.totalInterest | number:'1.2-2' }}</td>
+                  <td>
+                    <span class="badge bg-success bg-opacity-20 text-success">
+                      {{ calculateReturnPercentage(lumpSum) | number:'1.2-2' }}%
+                    </span>
+                  </td>
+                  <td>
+                    <span class="badge bg-primary bg-opacity-20 text-primary">
+                      {{ getCAGR(lumpSum) | number:'1.2-2' }}%
+                    </span>
+                  </td>
+                  <td class="text-end pe-4">
+                    <div class="btn-group btn-group-sm">
+                      <button class="btn btn-outline-primary" 
+                              [routerLink]="['/lump-sums/edit', lumpSum.id]"
+                              title="Edit">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="btn btn-outline-danger" 
+                              (click)="deleteLumpSum(lumpSum.id!)"
+                              title="Delete">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,147 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">
+            <i class="fas fa-edit me-2"></i>
+            {{isEdit ? 'Edit' : 'Add New'}} Expense
+          </h4>
+        </div>
+        
+        <div class="card-body">
+          <!-- Loading Spinner -->
+          <div *ngIf="isLoading" class="text-center py-4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">{{isEdit ? 'Loading expense...' : 'Creating expense...'}}</p>
+          </div>
+
+          <!-- Success Message -->
+          <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            {{ successMessage }}
+            <button type="button" class="btn-close" (click)="successMessage = ''"></button>
+          </div>
+
+          <!-- Error Message -->
+          <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            {{ errorMessage }}
+            <button type="button" class="btn-close" (click)="errorMessage = ''"></button>
+          </div>
+
+          <form *ngIf="!isLoading" [formGroup]="expenseForm" (ngSubmit)="onSubmit()" novalidate>
+            
+            <!-- Category Field -->
+            <div class="mb-3">
+              <label for="category" class="form-label">Category *</label>
+              <div class="input-group">
+                <select class="form-control" id="category" formControlName="category"
+                        [class.is-invalid]="category?.invalid && category?.touched"
+                        [class.is-valid]="category?.valid && category?.touched">
+                  <option value="">Select a Category</option>
+                  <option *ngFor="let cat of userCategories" [value]="cat">{{ cat }}</option>
+                </select>
+                <button type="button" class="btn btn-outline-secondary" (click)="addCustomCategory()">
+                  <i class="fas fa-plus"></i>
+                </button>
+              </div>
+              <div class="invalid-feedback" *ngIf="category?.invalid && category?.touched">
+                <span *ngIf="category?.errors?.['required']">Category is required</span>
+                <span *ngIf="category?.errors?.['maxlength']">
+                  Category must be less than 50 characters
+                </span>
+              </div>
+              <div class="form-text">
+                Can't find your category? Click the + button to add a custom one.
+              </div>
+            </div>
+
+            <!-- Amount Field -->
+            <div class="mb-3">
+              <label for="amount" class="form-label">Amount *</label>
+              <div class="input-group">
+                <span class="input-group-text">$</span>
+                <input type="number" class="form-control" id="amount" formControlName="amount"
+                       step="0.01" min="0.01" placeholder="0.00"
+                       [class.is-invalid]="amount?.invalid && amount?.touched"
+                       [class.is-valid]="amount?.valid && amount?.touched">
+              </div>
+              <div class="invalid-feedback" *ngIf="amount?.invalid && amount?.touched">
+                <span *ngIf="amount?.errors?.['required']">Amount is required</span>
+                <span *ngIf="amount?.errors?.['min']">Amount must be at least $0.01</span>
+                <span *ngIf="amount?.errors?.['max']">Amount is too large</span>
+              </div>
+            </div>
+
+            <!-- Date Field -->
+            <div class="mb-3">
+              <label for="date" class="form-label">Date *</label>
+              <input type="date" class="form-control" id="date" formControlName="date"
+                     [class.is-invalid]="date?.invalid && date?.touched"
+                     [class.is-valid]="date?.valid && date?.touched">
+              <div class="invalid-feedback" *ngIf="date?.invalid && date?.touched">
+                Date is required
+              </div>
+            </div>
+
+            <!-- Description Field -->
+            <div class="mb-3">
+              <label for="description" class="form-label">Description *</label>
+              <textarea class="form-control" id="description" formControlName="description" 
+                        rows="3" placeholder="Enter expense description..."
+                        [class.is-invalid]="description?.invalid && description?.touched"
+                        [class.is-valid]="description?.valid && description?.touched"></textarea>
+              <div class="form-text">
+                {{ description?.value?.length || 0 }}/500 characters
+              </div>
+              <div class="invalid-feedback" *ngIf="description?.invalid && description?.touched">
+                <span *ngIf="description?.errors?.['required']">Description is required</span>
+                <span *ngIf="description?.errors?.['minlength']">
+                  Description must be at least 3 characters
+                </span>
+                <span *ngIf="description?.errors?.['maxlength']">
+                  Description must be less than 500 characters
+                </span>
+              </div>
+            </div>
+
+            <!-- Inflation Rate Field -->
+            <div class="mb-4">
+              <label for="inflationRate" class="form-label">Inflation Rate (%)</label>
+              <div class="input-group">
+                <input type="number" class="form-control" id="inflationRate" formControlName="inflationRate"
+                       step="0.01" min="-100" max="100" placeholder="0.00"
+                       [class.is-invalid]="inflationRate?.invalid && inflationRate?.touched"
+                       [class.is-valid]="inflationRate?.valid && inflationRate?.touched">
+                <span class="input-group-text">%</span>
+              </div>
+              <div class="form-text">
+                Optional: Category-specific inflation rate for tracking and forecasting
+              </div>
+              <div class="invalid-feedback" *ngIf="inflationRate?.invalid && inflationRate?.touched">
+                <span *ngIf="inflationRate?.errors?.['min']">Inflation rate cannot be less than -100%</span>
+                <span *ngIf="inflationRate?.errors?.['max']">Inflation rate cannot be more than 100%</span>
+              </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <button type="button" class="btn btn-outline-secondary me-md-2" 
+                      (click)="onCancel()">
+                <i class="fas fa-times me-2"></i>Cancel
+              </button>
+              <button type="submit" class="btn btn-primary" 
+                      [disabled]="expenseForm.invalid || isLoading">
+                <i class="fas fa-save me-2"></i>
+                {{isEdit ? 'Update' : 'Create'}} Expense
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

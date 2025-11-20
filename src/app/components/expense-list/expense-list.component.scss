@@ -1,0 +1,69 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 123, 255, 0.1);
+  cursor: pointer;
+}
+
+.badge {
+  font-size: 0.75em;
+}
+
+.page-link {
+  cursor: pointer;
+}
+
+.text-truncate {
+  max-width: 200px;
+}
+
+/* Category color coding */
+.bg-Food { background-color: #28a745 !important; }
+.bg-Transportation { background-color: #007bff !important; }
+.bg-Housing { background-color: #6f42c1 !important; }
+.bg-Entertainment { background-color: #e83e8c !important; }
+.bg-Healthcare { background-color: #fd7e14 !important; }
+.bg-Utilities { background-color: #20c997 !important; }
+.bg-Shopping { background-color: #6c757d !important; }
+.bg-Other { background-color: #17a2b8 !important; }
+
+/* Card hover effects */
+.card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .btn-group-sm .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.775rem;
+  }
+  
+  .table-responsive {
+    font-size: 0.875rem;
+  }
+  
+  .card-body {
+    padding: 1rem;
+  }
+}
+
+/* Loading animation */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* Alert customization */
+.alert {
+  border: none;
+  border-radius: 10px;
+}

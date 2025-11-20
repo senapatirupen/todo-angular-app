@@ -1,5 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
 /* styles.css - Global Styles */
+
+/* Full height for root */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Make Angular root take full page */
+app-root {
+  display: block;
+  height: 100%;
+}
+
 body {
   background-color: #f8f9fa;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -13,7 +27,7 @@ body {
 }
 
 .todo-container {
-  max-width: 800px;
+//   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
 }

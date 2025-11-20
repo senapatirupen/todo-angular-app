@@ -1,0 +1,82 @@
+/* Custom styles for the goal form component */
+.card {
+  border: 1px solid #e3e6f0;
+  border-radius: 0.5rem;
+}
+
+.card-header {
+  background-color: #f8f9fc !important;
+  border-bottom: 1px solid #e3e6f0;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #4e73df;
+  box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+}
+
+.calculation-results {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.bg-opacity-10 {
+  background-color: rgba(var(--bs-primary-rgb), 0.1) !important;
+}
+
+/* Category badge styles */
+.badge {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .d-flex.justify-content-between {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .btn-group {
+    width: 100%;
+  }
+  
+  .calculation-results h3 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Form validation styles */
+.is-invalid {
+  border-color: #e74a3b !important;
+}
+
+.invalid-feedback {
+  display: block;
+}
+
+/* Loading state */
+.spinner-border {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Smooth transitions */
+.form-control,
+.form-select,
+.btn {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Custom category guide */
+.category-guide .badge {
+  font-size: 0.7rem;
+}

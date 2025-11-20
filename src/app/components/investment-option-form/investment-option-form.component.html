@@ -1,0 +1,362 @@
+<div class="container-fluid py-4">
+  <!-- Header Section -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h1 class="h3 mb-1">
+            <i class="fas fa-chart-line text-primary me-2"></i>
+            {{ isEdit ? 'Edit Investment Option' : 'Create New Investment Option' }}
+          </h1>
+          <p class="text-muted mb-0">
+            {{ isEdit ? 'Update investment option details' : 'Add a new investment opportunity to your portfolio' }}
+          </p>
+        </div>
+        <button class="btn btn-outline-secondary" (click)="onCancel()">
+          <i class="fas fa-arrow-left me-2"></i>Back to Options
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alert Messages -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i>{{ errorMessage }}
+        <button type="button" class="btn-close" (click)="errorMessage = ''"></button>
+      </div>
+      
+      <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle me-2"></i>{{ successMessage }}
+        <button type="button" class="btn-close" (click)="successMessage = ''"></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Main Form Column -->
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-header bg-light py-3">
+          <h5 class="card-title mb-0 fw-semibold">
+            <i class="fas fa-edit text-muted me-2"></i>
+            Investment Option Information
+          </h5>
+        </div>
+        <div class="card-body">
+          <!-- Loading State -->
+          <div *ngIf="isLoading && isEdit" class="text-center py-5">
+            <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+              <span class="visually-hidden">Loading investment option...</span>
+            </div>
+            <p class="text-muted">Loading investment option details...</p>
+          </div>
+
+          <form *ngIf="!isLoading || !isEdit" [formGroup]="investmentOptionForm" (ngSubmit)="onSubmit()">
+            <!-- Option Name -->
+            <div class="row mb-4">
+              <div class="col-md-12">
+                <label for="optionName" class="form-label fw-semibold">
+                  Investment Option Name <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  class="form-control form-control-lg"
+                  id="optionName"
+                  formControlName="name"
+                  placeholder="e.g., S&P 500 Index Fund, Corporate Bonds, Real Estate Investment Trust"
+                  [class.is-invalid]="name?.invalid && (name?.dirty || name?.touched)"
+                >
+                <div *ngIf="name?.invalid && (name?.dirty || name?.touched)" class="invalid-feedback">
+                  <div *ngIf="name?.errors?.['required']">Investment option name is required</div>
+                  <div *ngIf="name?.errors?.['maxlength']">Name must be less than 100 characters</div>
+                </div>
+                <div class="form-text">Give your investment option a clear, descriptive name</div>
+              </div>
+            </div>
+
+            <!-- Category and Risk Level -->
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <label for="optionCategory" class="form-label fw-semibold">
+                  Category <span class="text-danger">*</span>
+                </label>
+                <select
+                  class="form-select"
+                  id="optionCategory"
+                  formControlName="category"
+                  [class.is-invalid]="category?.invalid && (category?.dirty || category?.touched)"
+                >
+                  <option value="">Select a category</option>
+                  <option *ngFor="let cat of categories" [value]="cat">
+                    {{ getCategoryDisplayName(cat) }}
+                  </option>
+                </select>
+                <div *ngIf="category?.invalid && (category?.dirty || category?.touched)" class="invalid-feedback">
+                  Category is required
+                </div>
+                <div class="form-text">Type of investment vehicle</div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="riskLevel" class="form-label fw-semibold">
+                  Risk Level <span class="text-danger">*</span>
+                </label>
+                <select
+                  class="form-select"
+                  id="riskLevel"
+                  formControlName="riskLevel"
+                  [class.is-invalid]="riskLevel?.invalid && (riskLevel?.dirty || riskLevel?.touched)"
+                >
+                  <option value="">Select risk level</option>
+                  <option *ngFor="let risk of riskLevels" [value]="risk">
+                    {{ risk }}
+                  </option>
+                </select>
+                <div *ngIf="riskLevel?.invalid && (riskLevel?.dirty || riskLevel?.touched)" class="invalid-feedback">
+                  Risk level is required
+                </div>
+                <div class="form-text">Investment risk profile</div>
+              </div>
+            </div>
+
+            <!-- CAGR Range -->
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <label for="minCAGR" class="form-label fw-semibold">
+                  Minimum CAGR (%) <span class="text-danger">*</span>
+                </label>
+                <div class="input-group">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="minCAGR"
+                    formControlName="minCAGR"
+                    min="0"
+                    max="100"
+                    step="0.1"
+                    placeholder="5.0"
+                    [class.is-invalid]="minCAGR?.invalid && (minCAGR?.dirty || minCAGR?.touched)"
+                  >
+                  <span class="input-group-text">%</span>
+                </div>
+                <div *ngIf="minCAGR?.invalid && (minCAGR?.dirty || minCAGR?.touched)" class="invalid-feedback">
+                  <div *ngIf="minCAGR?.errors?.['required']">Minimum CAGR is required</div>
+                  <div *ngIf="minCAGR?.errors?.['min']">CAGR cannot be negative</div>
+                  <div *ngIf="minCAGR?.errors?.['max']">CAGR cannot exceed 100%</div>
+                </div>
+                <div class="form-text">Expected minimum annual return</div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="maxCAGR" class="form-label fw-semibold">
+                  Maximum CAGR (%) <span class="text-danger">*</span>
+                </label>
+                <div class="input-group">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="maxCAGR"
+                    formControlName="maxCAGR"
+                    min="0"
+                    max="100"
+                    step="0.1"
+                    placeholder="15.0"
+                    [class.is-invalid]="maxCAGR?.invalid && (maxCAGR?.dirty || maxCAGR?.touched)"
+                  >
+                  <span class="input-group-text">%</span>
+                </div>
+                <div *ngIf="maxCAGR?.invalid && (maxCAGR?.dirty || maxCAGR?.touched)" class="invalid-feedback">
+                  <div *ngIf="maxCAGR?.errors?.['required']">Maximum CAGR is required</div>
+                  <div *ngIf="maxCAGR?.errors?.['min']">CAGR cannot be negative</div>
+                  <div *ngIf="maxCAGR?.errors?.['max']">CAGR cannot exceed 100%</div>
+                </div>
+                <div class="form-text">Expected maximum annual return</div>
+              </div>
+            </div>
+
+            <!-- CAGR Range Validation -->
+            <div *ngIf="investmentOptionForm.errors?.['cagrRange'] && (minCAGR?.dirty || maxCAGR?.dirty)" 
+                 class="alert alert-warning py-2">
+              <i class="fas fa-exclamation-triangle me-2"></i>
+              Maximum CAGR should be greater than or equal to Minimum CAGR
+            </div>
+
+            <!-- Liquidity and Tax Efficiency -->
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <label for="liquidity" class="form-label fw-semibold">
+                  Liquidity <span class="text-danger">*</span>
+                </label>
+                <select
+                  class="form-select"
+                  id="liquidity"
+                  formControlName="liquidity"
+                  [class.is-invalid]="liquidity?.invalid && (liquidity?.dirty || liquidity?.touched)"
+                >
+                  <option value="">Select liquidity level</option>
+                  <option *ngFor="let liquid of liquidityLevels" [value]="liquid">
+                    {{ liquid }}
+                  </option>
+                </select>
+                <div *ngIf="liquidity?.invalid && (liquidity?.dirty || liquidity?.touched)" class="invalid-feedback">
+                  Liquidity level is required
+                </div>
+                <div class="form-text">How quickly you can access your funds</div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="taxEfficiency" class="form-label fw-semibold">Tax Efficiency</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="taxEfficiency"
+                  formControlName="taxEfficiency"
+                  placeholder="e.g., Tax-free, Tax-deferred, Capital gains"
+                >
+                <div class="form-text">Tax treatment of investment returns</div>
+              </div>
+            </div>
+
+            <!-- Notes -->
+            <div class="row mb-4">
+              <div class="col-12">
+                <label for="optionNotes" class="form-label fw-semibold">Notes & Details</label>
+                <textarea
+                  class="form-control"
+                  id="optionNotes"
+                  formControlName="notes"
+                  rows="4"
+                  placeholder="Add any additional details about this investment option, such as specific funds, strategies, or considerations..."
+                ></textarea>
+                <div class="form-text">Optional notes about this investment option</div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="row mt-4">
+              <div class="col-12">
+                <div class="d-flex gap-2 justify-content-end">
+                  <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">
+                    <i class="fas fa-times me-2"></i>Cancel
+                  </button>
+                  <button 
+                    type="submit" 
+                    class="btn btn-primary"
+                    [disabled]="isLoading || investmentOptionForm.invalid"
+                  >
+                    <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </span>
+                    <i *ngIf="!isLoading" class="fas fa-save me-2"></i>
+                    {{ isEdit ? 'Update Option' : 'Create Option' }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calculation Results Sidebar -->
+    <div class="col-lg-4">
+      <!-- Calculation Results Card -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-light py-3">
+          <h5 class="card-title mb-0 fw-semibold">
+            <i class="fas fa-calculator text-muted me-2"></i>
+            Investment Summary
+          </h5>
+        </div>
+        <div class="card-body">
+          <div *ngIf="!(minCAGR?.value && maxCAGR?.value)" class="text-center py-4">
+            <i class="fas fa-calculator fa-2x text-muted mb-3 opacity-50"></i>
+            <p class="text-muted mb-0">Enter CAGR values to see calculations</p>
+          </div>
+
+          <div *ngIf="minCAGR?.value && maxCAGR?.value" class="calculation-results">
+            <!-- Average CAGR -->
+            <div class="mb-4 p-3 bg-success bg-opacity-10 rounded">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="fw-semibold text-success">Average CAGR</span>
+                <i class="fas fa-percentage text-success"></i>
+              </div>
+              <h3 class="text-success fw-bold mb-0">
+                {{ getAverageCAGR() | number:'1.1-1' }}%
+              </h3>
+              <small class="text-muted">
+                Mean annual return expectation
+              </small>
+            </div>
+
+            <!-- CAGR Range -->
+            <div class="mb-4 p-3 bg-primary bg-opacity-10 rounded">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="fw-semibold text-primary">CAGR Range</span>
+                <i class="fas fa-chart-line text-primary"></i>
+              </div>
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="text-primary fw-bold">{{ minCAGR?.value }}%</span>
+                <span class="text-muted">to</span>
+                <span class="text-primary fw-bold">{{ maxCAGR?.value }}%</span>
+              </div>
+              <small class="text-muted">
+                Expected annual return range
+              </small>
+            </div>
+
+            <!-- Risk & Liquidity Summary -->
+            <div class="p-3 bg-light rounded">
+              <h6 class="fw-semibold mb-3">Investment Profile</h6>
+              <div class="d-flex justify-content-between mb-2" *ngIf="category?.value">
+                <span class="text-muted">Category:</span>
+                <span class="fw-semibold">{{ getCategoryDisplayName(category?.value) }}</span>
+              </div>
+              <div class="d-flex justify-content-between mb-2" *ngIf="riskLevel?.value">
+                <span class="text-muted">Risk Level:</span>
+                <span class="badge bg-{{ getRiskColor(riskLevel?.value) }}">
+                  {{ riskLevel?.value }}
+                </span>
+              </div>
+              <div class="d-flex justify-content-between" *ngIf="liquidity?.value">
+                <span class="text-muted">Liquidity:</span>
+                <span class="fw-semibold">{{ liquidity?.value }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category Information Card -->
+      <div class="card shadow-sm">
+        <div class="card-header bg-light py-3">
+          <h5 class="card-title mb-0 fw-semibold">
+            <i class="fas fa-info-circle text-muted me-2"></i>
+            Category Guide
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="category-guide">
+            <div *ngFor="let cat of categories" class="mb-3">
+              <div class="d-flex align-items-center mb-1">
+                <span class="badge bg-primary me-2">
+                  <i class="fas {{ getCategoryIcon(cat) }}"></i>
+                </span>
+                <span class="fw-semibold">{{ getCategoryDisplayName(cat) }}</span>
+              </div>
+              <small class="text-muted d-block">
+                <span *ngIf="cat === 'EQUITY'">Stocks, mutual funds, ETFs - ownership in companies</span>
+                <span *ngIf="cat === 'FIXED_INCOME'">Bonds, CDs, treasury bills - debt instruments</span>
+                <span *ngIf="cat === 'REAL_ESTATE'">Property, REITs - physical and real estate assets</span>
+                <span *ngIf="cat === 'COMMODITIES'">Gold, oil, agricultural products - physical goods</span>
+                <span *ngIf="cat === 'ALTERNATIVE'">Hedge funds, private equity, cryptocurrencies</span>
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
