@@ -27,6 +27,8 @@ import { EMIListComponent } from './components/emi-list/emi-list.component';
 import { EMIFormComponent } from './components/emi-form/emi-form.component';
 import { ExpenseListComponent } from './components/expense-list/expense-list.component';
 import { ExpenseFormComponent } from './components/expense-form/expense-form.component';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +50,9 @@ import { ExpenseFormComponent } from './components/expense-form/expense-form.com
     EMIListComponent,
     EMIFormComponent,
     ExpenseListComponent,
-    ExpenseFormComponent
+    ExpenseFormComponent,
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

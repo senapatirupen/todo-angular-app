@@ -1,12 +1,12 @@
 <!-- components/todo-list/todo-list.component.html -->
-<div class="todo-container">
+<div class="container mt-4">
   <div class="header">
-    <h2>My Todo List</h2>
-    <div class="user-info">
+    <h4>Todo List</h4>
+    <!-- <div class="user-info">
       <span>Welcome, {{ getCurrentUser()?.username }}!</span>
       <button class="btn btn-outline-danger btn-sm" (click)="logout()">Logout</button>
-    </div>
-    <div>
+    </div> -->
+    <!-- <div>
         <a class="nav-item nav-link link-body-emphasis text-primary-emphasis" routerLink="/goals"  routerLinkActive="active">Goals</a>
         <a class="nav-item nav-link link-body-emphasis text-primary-emphasis" routerLink="/investment-options"  routerLinkActive="active">Investment Options</a>
         <a class="nav-item nav-link link-body-emphasis text-primary-emphasis" routerLink="/income-sources"  routerLinkActive="active">Income Sources</a>
@@ -14,11 +14,7 @@
         <a class="nav-item nav-link link-body-emphasis text-primary-emphasis" routerLink="/sips"  routerLinkActive="active">SIPs</a>
         <a class="nav-item nav-link link-body-emphasis text-primary-emphasis" routerLink="/emis"  routerLinkActive="active">EMIs</a>
         <a class="nav-item nav-link link-body-emphasis text-primary-emphasis" routerLink="/expenses"  routerLinkActive="active">Expenses</a>
-
-
-
-
-    </div>
+    </div> -->
   </div>
 
   <div class="alert alert-danger" *ngIf="errorMessage" (click)="errorMessage = ''">
@@ -100,5 +96,19 @@
       (toggle)="toggleTodoCompletion(todo)"
       (delete)="deleteTodo(todo)"
     ></app-todo-item>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <i class="fas fa-bell text-primary me-2"></i>
+      <strong class="me-auto">Notification</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+    </div>
+    <div class="toast-body" id="toastMessage">
+      <!-- Toast message will appear here -->
+    </div>
   </div>
 </div>

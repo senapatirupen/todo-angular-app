@@ -1,0 +1,72 @@
+<div class="container">
+    <header class="lh-1 py-3 border-bottom" id="top">
+        <div class="row">
+            <div class="col-4 fs-3">
+                <a class="text-decoration-none link-danger" href="#">Finance T12</a>
+            </div>
+            <div class="col-4">
+            </div>
+            <div class="col-4">
+                <nav class="nav justify-content-end">
+                    <a class="nav-link link-body-emphasis text-primary-emphasis" style="margin-right: 10px;"
+                        *ngIf="!getCurrentUser()" routerLink="/login" routerLinkActive="active">Login</a>
+                    <a class="nav-link link-body-emphasis text-primary-emphasis" *ngIf="!getCurrentUser()"
+                        routerLink="/register" routerLinkActive="active">Sign-up</a>
+                    <span *ngIf="getCurrentUser()" class="navbar-text me-3">
+                        <i class="fas fa-user me-1"></i>
+                        Welcome, {{ getCurrentUser()?.username }}
+                    </span>
+                    <a *ngIf="getCurrentUser()" class="nav-link" (click)="logout()" style="cursor: pointer;">
+                        <i class="fas fa-sign-out-alt me-1"></i>Logout
+                    </a>
+                    <!-- <a class="nav-link link-body-emphasis text-primary-emphasis"  *ngIf="getCurrentUser()" routerLink="/user" routerLinkActive="active">{{getCurrentUser()?.currentUser}}</a> -->
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="container lh-1 py-3">
+        <nav class="nav nav-underline justify-content-between">
+            <a class="nav-item nav-link link-body-emphasis text-primary-emphasis" routerLink="/finance"
+                routerLinkActive="active">Home</a>
+            <a class="nav-item nav-link link-body-emphasis text-primary-emphasis" routerLink="/goals"
+                routerLinkActive="active">Goals</a>
+            <a class="nav-item nav-link link-body-emphasis text-primary-emphasis" routerLink="/investment-options"
+                routerLinkActive="active">Investment Options</a>
+            <a class="nav-item nav-link link-body-emphasis text-primary-emphasis" routerLink="/income-sources"
+                routerLinkActive="active">Income Sources</a>
+            <a class="nav-item nav-link link-body-emphasis text-primary-emphasis" routerLink="/lump-sums"
+                routerLinkActive="active">Lump Sums</a>
+            <a class="nav-item nav-link link-body-emphasis text-primary-emphasis" routerLink="/sips"
+                routerLinkActive="active">SIPs</a>
+            <a class="nav-item nav-link link-body-emphasis text-primary-emphasis" routerLink="/emis"
+                routerLinkActive="active">EMIs</a>
+            <a class="nav-item nav-link link-body-emphasis text-primary-emphasis" routerLink="/expenses"
+                routerLinkActive="active">Expenses</a>
+        </nav>
+    </div>
+
+</div>
+<!-- <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+    <div class="container">
+        <a class="navbar-brand" routerLink="/">
+            <i class="fas fa-check-circle me-2"></i>Todo Angular
+        </a>
+
+        <div class="navbar-nav ms-auto">
+            <span *ngIf="getCurrentUser()" class="navbar-text me-3">
+                <i class="fas fa-user me-1"></i>
+                {{ getCurrentUser()?.username }}
+            </span>
+            <a *ngIf="getCurrentUser()" class="nav-link" routerLink="/todos">
+                <i class="fas fa-list me-1"></i>My Todos
+            </a>
+            <a *ngIf="getCurrentUser()" class="nav-link" (click)="logout()" style="cursor: pointer;">
+                <i class="fas fa-sign-out-alt me-1"></i>Logout
+            </a>
+            <a *ngIf="!getCurrentUser()" class="nav-link" routerLink="/login">
+                <i class="fas fa-sign-in-alt me-1"></i>Login
+            </a>
+        </div>
+    </div>
+</nav> -->
