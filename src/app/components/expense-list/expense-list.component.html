@@ -1,9 +1,15 @@
 <div class="container mt-4">
+    <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis border">
+        <div class="col-lg-12 px-0">
+            <h2 class="display-6 fst-italic text-primary-emphasis">Declare Your Monthly Expenses</h2>
+            <p><em class="heading">Track Your Monthly Expenses to Take Charge of Your Financial Life.</em></p>
+        </div>
+    </div>
     <!-- Header -->
-    <div class="row mb-4">
+    <!-- <div class="row mb-4">
         <div class="col-12">
             <div class="card">
-                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="mb-0">
                         <i class="fas fa-receipt me-2"></i>Expense Management
                     </h4>
@@ -11,6 +17,24 @@
                         <i class="fas fa-plus me-2"></i>Add Expense
                     </button>
                 </div>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="h3 mb-1">
+                        <i class="fas fa-credit-card text-primary"></i>Expense Management
+                    </h1>
+                    <p class="text-muted mb-0">Track and manage your expenses effectively to
+                    gain better control over your finances.</p> 
+                </div>
+                <button class="btn btn-primary" routerLink="/expenses/new">
+                    <i class="fas fa-plus me-2"></i>Add Expense
+                </button>
             </div>
         </div>
     </div>
@@ -38,7 +62,7 @@
     <div *ngIf="!isLoading" class="row">
         <!-- Summary Cards -->
         <div class="col-lg-3 col-md-6 mb-4">
-            <div class="card text-white bg-primary">
+            <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div>
@@ -54,7 +78,7 @@
         </div>
 
         <div class="col-lg-3 col-md-6 mb-4">
-            <div class="card text-white bg-success">
+            <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div>
@@ -70,7 +94,7 @@
         </div>
 
         <div class="col-lg-3 col-md-6 mb-4">
-            <div class="card text-white bg-info">
+            <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div>
@@ -86,7 +110,7 @@
         </div>
 
         <div class="col-lg-3 col-md-6 mb-4">
-            <div class="card text-white bg-warning">
+            <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div>
@@ -216,7 +240,7 @@
                     <!-- Expenses Table -->
                     <div *ngIf="filteredExpenses.length > 0" class="table-responsive">
                         <table class="table table-hover table-striped">
-                            <thead class="table-dark">
+                            <thead>
                                 <tr>
                                     <th>Date</th>
                                     <th>Category</th>
@@ -255,11 +279,11 @@
                                         <div class="btn-group btn-group-sm">
                                             <button class="btn btn-outline-primary"
                                                 [routerLink]="['/expenses/edit', expense.id]" title="Edit Expense">
-                                                <i class="fas fa-edit"></i>
+                                                <i class="fas fa-edit"></i>Edit
                                             </button>
                                             <button class="btn btn-outline-danger" (click)="deleteExpense(expense.id!)"
                                                 title="Delete Expense">
-                                                <i class="fas fa-trash"></i>
+                                                <i class="fas fa-trash"></i>Delete
                                             </button>
                                         </div>
                                     </td>

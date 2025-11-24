@@ -1,11 +1,17 @@
 <div class="container mt-4">
+    <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis border">
+        <div class="col-lg-12 px-0">
+            <h2 class="display-6 fst-italic text-primary-emphasis">Define Your Financial Goals</h2>
+            <p><em class="heading">Your Investments Need Goals — Otherwise They Become Just Numbers.</em></p>
+        </div>
+    </div>
     <!-- Header Section -->
     <div class="row mb-4">
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h1 class="h3 mb-1">
-                        <i class="fas fa-bullseye text-primary me-2"></i>Financial Goals
+                        <i class="fas fa-bullseye text-primary"></i>Financial Goals
                     </h1>
                     <p class="text-muted mb-0">Track and manage your financial objectives</p>
                 </div>
@@ -28,12 +34,12 @@
     <!-- Summary Cards -->
     <div *ngIf="summary" class="row mb-4">
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-start border-primary border-4 shadow-sm h-100">
+            <div class="card">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1">
-                            <h6 class="text-muted fw-semibold">Total Goals</h6>
-                            <h4 class="mb-0 fw-bold text-primary">{{ summary.totalGoals }}</h4>
+                            <h6 class="text-muted fw-semibold text-primary-emphasis">Total Goals</h6>
+                            <h4 class="mb-0">{{ summary.totalGoals }}</h4>
                             <small class="text-muted">Across all categories</small>
                         </div>
                         <div class="flex-shrink-0">
@@ -45,12 +51,12 @@
         </div>
 
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-start border-success border-4 shadow-sm h-100">
+            <div class="card">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1">
-                            <h6 class="text-muted fw-semibold">Total Target Amount</h6>
-                            <h4 class="mb-0 fw-bold text-success">{{ summary.totalTargetAmount |
+                            <h6 class="text-muted fw-semibold text-primary-emphasis">Total Target Amount</h6>
+                            <h4 class="mb-0">{{ summary.totalTargetAmount |
                                 currency:'USD':'symbol':'1.0-0' }}</h4>
                             <small class="text-muted">Combined target</small>
                         </div>
@@ -63,12 +69,12 @@
         </div>
 
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-start border-info border-4 shadow-sm h-100">
+            <div class="card">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1">
-                            <h6 class="text-muted fw-semibold">Average Duration</h6>
-                            <h4 class="mb-0 fw-bold text-info">{{ summary.averageDuration | number:'1.1-1' }} yrs</h4>
+                            <h6 class="text-muted fw-semibold text-primary-emphasis">Average Duration</h6>
+                            <h4 class="mb-0">{{ summary.averageDuration | number:'1.1-1' }} yrs</h4>
                             <small class="text-muted">Mean goal duration</small>
                         </div>
                         <div class="flex-shrink-0">
@@ -80,12 +86,12 @@
         </div>
 
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-start border-warning border-4 shadow-sm h-100">
+            <div class="card">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1">
-                            <h6 class="text-muted fw-semibold">Short Term Goals</h6>
-                            <h4 class="mb-0 fw-bold text-warning">{{ summary.shortTermGoals }}</h4>
+                            <h6 class="text-muted fw-semibold text-primary-emphasis">Short Term Goals</h6>
+                            <h4 class="mb-0">{{ summary.shortTermGoals }}</h4>
                             <small class="text-muted">Immediate objectives</small>
                         </div>
                         <div class="flex-shrink-0">
@@ -150,7 +156,7 @@
                 <div class="card-header bg-light py-3 d-flex justify-content-between align-items-center">
                     <h5 class="card-title mb-0 fw-semibold">
                         <i class="fas fa-list text-muted me-2"></i>Your Goals
-                        <span class="badge bg-primary ms-2">{{ goals.length }}</span>
+                        <span class="badge border border-warning text-success bg-transparent ms-2">{{ goals.length }}</span>
                     </h5>
                     <div class="d-flex align-items-center">
                         <div class="spinner-border spinner-border-sm text-primary me-2" role="status" *ngIf="isLoading">
@@ -186,11 +192,11 @@
                                 <div class="col-lg-8">
                                     <div class="d-flex align-items-start">
                                         <div class="flex-shrink-0 me-3">
-                                            <span
+                                            <!-- <span
                                                 class="badge bg-{{ getCategoryColor(goal.category) }} rounded-circle p-2 d-flex align-items-center justify-content-center"
                                                 style="width: 40px; height: 40px;">
                                                 <i class="fas {{ getCategoryIcon(goal.category) }} fa-sm"></i>
-                                            </span>
+                                            </span> -->
                                         </div>
                                         <div class="flex-grow-1">
                                             <h5 class="mb-2 fw-semibold text-dark">{{ goal.name }}</h5>
@@ -221,11 +227,11 @@
 
                                             <!-- Monthly Savings Calculation -->
                                             <div *ngIf="goal.targetAmount && goal.duration"
-                                                class="bg-primary bg-opacity-10 p-3 rounded">
+                                                class="bg-opacity-10 p-3 rounded">
                                                 <div class="d-flex justify-content-between align-items-center">
-                                                    <span class="fw-semibold text-primary">Monthly Savings
+                                                    <span class="fw-semibold">Monthly Savings
                                                         Required:</span>
-                                                    <span class="h5 mb-0 fw-bold text-primary">
+                                                    <span class="h5 mb-0 fw-bold">
                                                         {{ calculateMonthlySavings(goal) |
                                                         currency:'USD':'symbol':'1.0-0' }}
                                                     </span>
@@ -245,11 +251,11 @@
                                                 [title]="'Edit ' + goal.name">
                                                 <i class="fas fa-edit me-1"></i>Edit
                                             </button>
-                                            <button class="btn btn-outline-info btn-sm"
-                                                [routerLink]="['/goals', goal.id]"
+                                            <!-- <button class="btn btn-outline-info btn-sm"
+                                                [routerLink]="['/goals/view', goal.id]"
                                                 [title]="'View details of ' + goal.name">
                                                 <i class="fas fa-eye me-1"></i>View
-                                            </button>
+                                            </button> -->
                                             <button class="btn btn-outline-danger btn-sm" (click)="deleteGoal(goal.id!)"
                                                 [title]="'Delete ' + goal.name">
                                                 <i class="fas fa-trash me-1"></i>Delete

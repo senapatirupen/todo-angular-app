@@ -1,212 +1,215 @@
 <div class="container mt-4">
-  <!-- Header Section -->
-  <div class="row mb-4">
-    <div class="col-12">
-      <div class="d-flex justify-content-between align-items-center">
-        <div>
-          <h1 class="h3 mb-1">
-            <i class="fas fa-credit-card text-primary me-2"></i>EMI Management
-          </h1>
-          <p class="text-muted mb-0">Track and manage your Equated Monthly Installments</p>
+    <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis border">
+        <div class="col-lg-12 px-0">
+            <h2 class="display-6 fst-italic text-primary-emphasis">Declare Your EMI Expenses</h2>
+            <p><em class="heading">Turn Your EMIs Into Investments — Not Liabilities.</em></p>
         </div>
-        <button class="btn btn-primary" routerLink="/emis/new">
-          <i class="fas fa-plus me-2"></i>Add EMI
-        </button>
-      </div>
     </div>
-  </div>
-
-  <!-- Error Alert -->
-  <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
-    <i class="fas fa-exclamation-triangle me-2"></i>{{ errorMessage }}
-    <button type="button" class="btn-close" (click)="errorMessage = ''"></button>
-  </div>
-
-  <!-- Summary Cards -->
-  <div *ngIf="summary" class="row mb-4">
-    <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card border-start border-primary border-4 shadow-sm h-100">
-        <div class="card-body">
-          <div class="d-flex align-items-center">
-            <div class="flex-grow-1">
-              <h6 class="text-muted fw-semibold">Total EMIs</h6>
-              <h4 class="mb-0 fw-bold text-primary">{{ summary.totalEMIs }}</h4>
-              <small class="text-muted">Active loans</small>
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="h3 mb-1">
+                        <i class="fas fa-credit-card text-primary"></i>EMI Management
+                    </h1>
+                    <p class="text-muted mb-0">Track and manage your Equated Monthly Installments</p>
+                </div>
+                <button class="btn btn-primary" routerLink="/emis/new">
+                    <i class="fas fa-plus me-2"></i>Add EMI
+                </button>
             </div>
-            <div class="flex-shrink-0">
-              <i class="fas fa-list text-primary fa-2x opacity-75"></i>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
 
-    <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card border-start border-success border-4 shadow-sm h-100">
-        <div class="card-body">
-          <div class="d-flex align-items-center">
-            <div class="flex-grow-1">
-              <h6 class="text-muted fw-semibold">Total Principal</h6>
-              <h4 class="mb-0 fw-bold text-success">${{ summary.totalPrincipal | number:'1.2-2' }}</h4>
-              <small class="text-muted">Total loan amount</small>
-            </div>
-            <div class="flex-shrink-0">
-              <i class="fas fa-dollar-sign text-success fa-2x opacity-75"></i>
-            </div>
-          </div>
-        </div>
-      </div>
+    <!-- Error Alert -->
+    <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i>{{ errorMessage }}
+        <button type="button" class="btn-close" (click)="errorMessage = ''"></button>
     </div>
 
-    <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card border-start border-info border-4 shadow-sm h-100">
-        <div class="card-body">
-          <div class="d-flex align-items-center">
-            <div class="flex-grow-1">
-              <h6 class="text-muted fw-semibold">Monthly EMI</h6>
-              <h4 class="mb-0 fw-bold text-info">${{ summary.totalMonthlyEMI | number:'1.2-2' }}</h4>
-              <small class="text-muted">Total monthly payment</small>
-            </div>
-            <div class="flex-shrink-0">
-              <i class="fas fa-calendar-alt text-info fa-2x opacity-75"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card border-start border-warning border-4 shadow-sm h-100">
-        <div class="card-body">
-          <div class="d-flex align-items-center">
-            <div class="flex-grow-1">
-              <h6 class="text-muted fw-semibold">Remaining Principal</h6>
-              <h4 class="mb-0 fw-bold text-warning">${{ summary.remainingPrincipal | number:'1.2-2' }}</h4>
-              <small class="text-muted">Outstanding balance</small>
-            </div>
-            <div class="flex-shrink-0">
-              <i class="fas fa-balance-scale text-warning fa-2x opacity-75"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- EMI Loans Table -->
-  <div class="row">
-    <div class="col-12">
-      <div class="card shadow-sm">
-        <div class="card-header bg-light py-3 d-flex justify-content-between align-items-center">
-          <h5 class="card-title mb-0 fw-semibold">
-            <i class="fas fa-list text-muted me-2"></i>All EMI Loans
-            <span class="badge bg-primary ms-2">{{ emis.length }}</span>
-          </h5>
-          <div class="d-flex align-items-center">
-            <div class="spinner-border spinner-border-sm text-primary me-2" role="status" *ngIf="isLoading">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-            <span class="text-muted small" *ngIf="!isLoading">{{ emis.length }} loans</span>
-          </div>
-        </div>
-        <div class="card-body p-0">
-          <!-- Loading State -->
-          <div *ngIf="isLoading" class="text-center py-5">
-            <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
-              <span class="visually-hidden">Loading EMIs...</span>
-            </div>
-            <p class="text-muted">Loading EMI loans...</p>
-          </div>
-
-          <!-- Empty State -->
-          <div *ngIf="!isLoading && emis.length === 0" class="text-center py-5">
-            <i class="fas fa-credit-card fa-4x text-muted mb-3 opacity-50"></i>
-            <h4 class="text-muted mb-3">No EMI loans found</h4>
-            <p class="text-muted mb-4">Start tracking your loan payments by adding your first EMI.</p>
-            <button class="btn btn-primary btn-lg" routerLink="/emis/new">
-              <i class="fas fa-plus me-2"></i>Add EMI Loan
-            </button>
-          </div>
-
-          <!-- EMI Loans Table -->
-          <div *ngIf="!isLoading && emis.length > 0" class="table-responsive">
-            <table class="table table-hover mb-0">
-              <thead class="table-light">
-                <tr>
-                  <th scope="col" class="ps-4">Loan For</th>
-                  <th scope="col">Principal</th>
-                  <th scope="col">Interest Rate</th>
-                  <th scope="col">Tenure</th>
-                  <th scope="col">EMI Amount</th>
-                  <th scope="col">Progress</th>
-                  <th scope="col">Paid/Remaining</th>
-                  <th scope="col" class="text-end pe-4">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let emi of emis">
-                  <td class="ps-4 fw-semibold">{{ emi.emiForName }}</td>
-                  <td>${{ emi.principal | number:'1.2-2' }}</td>
-                  <td>
-                    <span class="badge bg-info bg-opacity-20 text-info">
-                      {{ emi.annualInterestRate }}%
-                    </span>
-                  </td>
-                  <td>
-                    <span class="badge bg-secondary bg-opacity-20 text-secondary">
-                      {{ emi.totalTenure }} months
-                    </span>
-                  </td>
-                  <td class="fw-semibold text-primary">${{ emi.emiAmount | number:'1.2-2' }}</td>
-                  <td>
+    <!-- Summary Cards -->
+    <div *ngIf="summary" class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
                     <div class="d-flex align-items-center">
-                      <div class="progress flex-grow-1 me-2" style="height: 8px;">
-                        <div class="progress-bar bg-success" 
-                             [style.width]="calculateProgress(emi) + '%'"
-                             role="progressbar">
+                        <div class="flex-grow-1">
+                            <h6 class="text-muted fw-semibold text-primary-emphasis">Total EMIs</h6>
+                            <h4 class="mb-0">{{ summary.totalEMIs }}</h4>
+                            <small class="text-muted">Active loans</small>
                         </div>
-                      </div>
-                      <small class="text-muted">{{ calculateProgress(emi) | number:'1.1-1' }}%</small>
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-list text-primary fa-2x opacity-75"></i>
+                        </div>
                     </div>
-                  </td>
-                  <td>
-                    <div class="small">
-                      <div class="text-success">
-                        <i class="fas fa-check-circle me-1"></i>
-                        {{ emi.tenuresPaid }} paid
-                      </div>
-                      <div class="text-muted">
-                        <i class="fas fa-clock me-1"></i>
-                        {{ emi.remainingTenure }} remaining
-                      </div>
-                    </div>
-                  </td>
-                  <td class="text-end pe-4">
-                    <div class="btn-group btn-group-sm">
-                      <button class="btn btn-outline-success" 
-                              (click)="makePayment(emi.id!)"
-                              [title]="'Mark payment for ' + emi.emiForName"
-                              [disabled]="emi.tenuresPaid >= emi.totalTenure!">
-                        <i class="fas fa-check"></i>
-                      </button>
-                      <button class="btn btn-outline-primary" 
-                              [routerLink]="['/emis/edit', emi.id]"
-                              title="Edit">
-                        <i class="fas fa-edit"></i>
-                      </button>
-                      <button class="btn btn-outline-danger" 
-                              (click)="deleteEMI(emi.id!)"
-                              title="Delete">
-                        <i class="fas fa-trash"></i>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+                </div>
+            </div>
         </div>
-      </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h6 class="text-muted fw-semibold text-primary-emphasis">Total Principal</h6>
+                            <h4 class="mb-0">${{ summary.totalPrincipal | number:'1.2-2' }}</h4>
+                            <small class="text-muted">Total loan amount</small>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-dollar-sign text-success fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h6 class="text-muted fw-semibold text-primary-emphasis">Monthly EMI</h6>
+                            <h4 class="mb-0">${{ summary.totalMonthlyEMI | number:'1.2-2' }}</h4>
+                            <small class="text-muted">Total monthly payment</small>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-calendar-alt text-info fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h6 class="text-muted fw-semibold text-primary-emphasis">Remaining Principal</h6>
+                            <h4 class="mb-0">${{ summary.remainingPrincipal | number:'1.2-2' }}</h4>
+                            <small class="text-muted">Outstanding balance</small>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-balance-scale text-warning fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
+
+    <!-- EMI Loans Table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light py-3 d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0 fw-semibold">
+                        <i class="fas fa-list text-muted me-2"></i>All EMI Loans
+                        <span class="badge border border-warning text-success bg-transparent ms-2">{{ emis.length }}</span>
+                    </h5>
+                    <div class="d-flex align-items-center">
+                        <div class="spinner-border spinner-border-sm text-primary me-2" role="status" *ngIf="isLoading">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <span class="text-muted small" *ngIf="!isLoading">{{ emis.length }} loans</span>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <!-- Loading State -->
+                    <div *ngIf="isLoading" class="text-center py-5">
+                        <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+                            <span class="visually-hidden">Loading EMIs...</span>
+                        </div>
+                        <p class="text-muted">Loading EMI loans...</p>
+                    </div>
+
+                    <!-- Empty State -->
+                    <div *ngIf="!isLoading && emis.length === 0" class="text-center py-5">
+                        <i class="fas fa-credit-card fa-4x text-muted mb-3 opacity-50"></i>
+                        <h4 class="text-muted mb-3">No EMI loans found</h4>
+                        <p class="text-muted mb-4">Start tracking your loan payments by adding your first EMI.</p>
+                        <button class="btn btn-primary btn-lg" routerLink="/emis/new">
+                            <i class="fas fa-plus me-2"></i>Add EMI Loan
+                        </button>
+                    </div>
+
+                    <!-- EMI Loans Table -->
+                    <div *ngIf="!isLoading && emis.length > 0" class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th scope="col" class="ps-4">Loan For</th>
+                                    <th scope="col">Principal</th>
+                                    <th scope="col">Interest Rate</th>
+                                    <th scope="col">Tenure</th>
+                                    <th scope="col">EMI Amount</th>
+                                    <th scope="col">Progress</th>
+                                    <th scope="col">Paid/Remaining</th>
+                                    <th scope="col" class="text-end pe-4">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let emi of emis">
+                                    <td class="ps-4 fw-semibold">{{ emi.emiForName }}</td>
+                                    <td>${{ emi.principal | number:'1.2-2' }}</td>
+                                    <td>
+                                        <span class="badge bg-opacity-20 text-secondary">
+                                            {{ emi.annualInterestRate }}%
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-opacity-20 text-secondary">
+                                            {{ emi.totalTenure }} months
+                                        </span>
+                                    </td>
+                                    <td class="fw-semibold text-secondary">${{ emi.emiAmount | number:'1.2-2' }}</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="progress flex-grow-1 me-2" style="height: 8px;">
+                                                <div class="progress-bar bg-success"
+                                                    [style.width]="calculateProgress(emi) + '%'" role="progressbar">
+                                                </div>
+                                            </div>
+                                            <small class="text-muted">{{ calculateProgress(emi) | number:'1.1-1'
+                                                }}%</small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="small">
+                                            <div class="text-success">
+                                                <i class="fas fa-check-circle me-1"></i>
+                                                {{ emi.tenuresPaid }} paid
+                                            </div>
+                                            <div class="text-muted">
+                                                <i class="fas fa-clock me-1"></i>
+                                                {{ emi.remainingTenure }} remaining
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-end pe-4">
+                                        <div class="btn-group btn-group-sm">
+                                            <!-- <button class="btn btn-outline-success" (click)="makePayment(emi.id!)"
+                                                [title]="'Mark payment for ' + emi.emiForName"
+                                                [disabled]="emi.tenuresPaid >= emi.totalTenure!">
+                                                <i class="fas fa-check"></i>
+                                            </button> -->
+                                            <button class="btn btn-outline-primary"
+                                                [routerLink]="['/emis/edit', emi.id]" title="Edit">
+                                                <i class="fas fa-edit"></i>Edit
+                                            </button>
+                                            <button class="btn btn-outline-danger" (click)="deleteEMI(emi.id!)"
+                                                title="Delete">
+                                                <i class="fas fa-trash"></i>Delete
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

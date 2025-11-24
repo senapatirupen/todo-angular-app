@@ -1,392 +1,399 @@
 <div class="container mt-4">
-  <!-- Header Section -->
-  <div class="row mb-4">
-    <div class="col-12">
-      <div class="d-flex justify-content-between align-items-center">
-        <div>
-          <h1 class="h3 mb-1">
-            <i class="fas fa-chart-line text-primary me-2"></i>Investment Options
-          </h1>
-          <p class="text-muted mb-0">Explore and manage different investment opportunities</p>
+    <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis border">
+        <div class="col-lg-12 px-0">
+            <h2 class="display-6 fst-italic text-primary-emphasis">Define Your Investment Options</h2>
+            <p><em class="heading">Choose the Right Investment Options — Because Without Direction, Money Doesn’t Grow.</em></p>
         </div>
-        <button class="btn btn-primary" routerLink="/investment-options/new">
-          <i class="fas fa-plus me-2"></i>Add New Option
-        </button>
-      </div>
     </div>
-  </div>
-
-  <!-- Error Alert -->
-  <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
-    <i class="fas fa-exclamation-triangle me-2"></i>{{ errorMessage }}
-    <button type="button" class="btn-close" (click)="errorMessage = ''"></button>
-  </div>
-
-  <!-- Summary Cards -->
-  <div *ngIf="summary" class="row mb-4">
-    <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card border-start border-primary border-4 shadow-sm h-100">
-        <div class="card-body">
-          <div class="d-flex align-items-center">
-            <div class="flex-grow-1">
-              <h6 class="text-muted fw-semibold">Total Options</h6>
-              <h4 class="mb-0 fw-bold text-primary">{{ summary.totalInvestmentOptions }}</h4>
-              <small class="text-muted">Available investments</small>
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="h3 mb-1">
+                        <i class="fas fa-chart-line text-primary"></i>Investment Options
+                    </h1>
+                    <p class="text-muted mb-0">Explore and manage different investment opportunities</p>
+                </div>
+                <button class="btn btn-primary" routerLink="/investment-options/new">
+                    <i class="fas fa-plus me-2"></i>Add New Option
+                </button>
             </div>
-            <div class="flex-shrink-0">
-              <i class="fas fa-chart-pie text-primary fa-2x opacity-75"></i>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
 
-    <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card border-start border-success border-4 shadow-sm h-100">
-        <div class="card-body">
-          <div class="d-flex align-items-center">
-            <div class="flex-grow-1">
-              <h6 class="text-muted fw-semibold">Average CAGR</h6>
-              <h4 class="mb-0 fw-bold text-success">{{ summary.averageCAGR | number:'1.1-1' }}%</h4>
-              <small class="text-muted">Mean return rate</small>
-            </div>
-            <div class="flex-shrink-0">
-              <i class="fas fa-percentage text-success fa-2x opacity-75"></i>
-            </div>
-          </div>
-        </div>
-      </div>
+    <!-- Error Alert -->
+    <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i>{{ errorMessage }}
+        <button type="button" class="btn-close" (click)="errorMessage = ''"></button>
     </div>
 
-    <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card border-start border-info border-4 shadow-sm h-100">
-        <div class="card-body">
-          <div class="d-flex align-items-center">
-            <div class="flex-grow-1">
-              <h6 class="text-muted fw-semibold">High Liquidity</h6>
-              <h4 class="mb-0 fw-bold text-info">{{ summary.liquidityDistribution['HIGH'] || 0 }}</h4>
-              <small class="text-muted">Easy to access funds</small>
+    <!-- Summary Cards -->
+    <div *ngIf="summary" class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h6 class="text-muted fw-semibold text-primary-emphasis">Total Options</h6>
+                            <h4 class="mb-0">{{ summary.totalInvestmentOptions }}</h4>
+                            <small class="text-muted">Available investments</small>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-chart-pie text-primary fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="flex-shrink-0">
-              <i class="fas fa-tachometer-alt-fast text-info fa-2x opacity-75"></i>
-            </div>
-          </div>
         </div>
-      </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h6 class="text-muted fw-semibold text-primary-emphasis">Average CAGR</h6>
+                            <h4 class="mb-0">{{ summary.averageCAGR | number:'1.1-1' }}%</h4>
+                            <small class="text-muted">Mean return rate</small>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-percentage text-success fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h6 class="text-muted fw-semibold text-primary-emphasis">High Liquidity</h6>
+                            <h4 class="mb-0">{{ summary.liquidityDistribution['HIGH'] || 0 }}</h4>
+                            <small class="text-muted">Easy to access funds</small>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-tachometer-alt-fast text-info fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h6 class="text-muted fw-semibold text-primary-emphasis">Low Risk</h6>
+                            <h4 class="mb-0">{{ summary.riskDistribution['LOW'] || 0 }}</h4>
+                            <small class="text-muted">Conservative options</small>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-shield-alt text-warning fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card border-start border-warning border-4 shadow-sm h-100">
-        <div class="card-body">
-          <div class="d-flex align-items-center">
-            <div class="flex-grow-1">
-              <h6 class="text-muted fw-semibold">Low Risk</h6>
-              <h4 class="mb-0 fw-bold text-warning">{{ summary.riskDistribution['LOW'] || 0 }}</h4>
-              <small class="text-muted">Conservative options</small>
-            </div>
-            <div class="flex-shrink-0">
-              <i class="fas fa-shield-alt text-warning fa-2x opacity-75"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+    <!-- Main Content Row -->
+    <div class="row">
+        <!-- Investment Options List Column -->
+        <div class="col-lg-8">
+            <!-- Filters Card -->
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-light py-3">
+                    <h5 class="card-title mb-0 fw-semibold">
+                        <i class="fas fa-filter text-muted me-2"></i>Filters & Search
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-4">
+                            <label for="categoryFilter" class="form-label fw-semibold">Category</label>
+                            <select class="form-select" id="categoryFilter" [(ngModel)]="selectedCategory">
+                                <option value="">All Categories</option>
+                                <option *ngFor="let category of categories" [value]="category">
+                                    {{ getCategoryDisplayName(category) }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="riskFilter" class="form-label fw-semibold">Risk Level</label>
+                            <select class="form-select" id="riskFilter" [(ngModel)]="selectedRiskLevel">
+                                <option value="">All Risk Levels</option>
+                                <option *ngFor="let risk of riskLevels" [value]="risk">
+                                    {{ risk }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="liquidityFilter" class="form-label fw-semibold">Liquidity</label>
+                            <select class="form-select" id="liquidityFilter" [(ngModel)]="selectedLiquidity">
+                                <option value="">All Liquidity</option>
+                                <option *ngFor="let liquidity of liquidityLevels" [value]="liquidity">
+                                    {{ liquidity }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
 
-  <!-- Main Content Row -->
-  <div class="row">
-    <!-- Investment Options List Column -->
-    <div class="col-lg-8">
-      <!-- Filters Card -->
-      <div class="card mb-4 shadow-sm">
-        <div class="card-header bg-light py-3">
-          <h5 class="card-title mb-0 fw-semibold">
-            <i class="fas fa-filter text-muted me-2"></i>Filters & Search
-          </h5>
-        </div>
-        <div class="card-body">
-          <div class="row g-3 align-items-end">
-            <div class="col-md-4">
-              <label for="categoryFilter" class="form-label fw-semibold">Category</label>
-              <select class="form-select" id="categoryFilter" [(ngModel)]="selectedCategory">
-                <option value="">All Categories</option>
-                <option *ngFor="let category of categories" [value]="category">
-                  {{ getCategoryDisplayName(category) }}
-                </option>
-              </select>
-            </div>
-            <div class="col-md-4">
-              <label for="riskFilter" class="form-label fw-semibold">Risk Level</label>
-              <select class="form-select" id="riskFilter" [(ngModel)]="selectedRiskLevel">
-                <option value="">All Risk Levels</option>
-                <option *ngFor="let risk of riskLevels" [value]="risk">
-                  {{ risk }}
-                </option>
-              </select>
-            </div>
-            <div class="col-md-4">
-              <label for="liquidityFilter" class="form-label fw-semibold">Liquidity</label>
-              <select class="form-select" id="liquidityFilter" [(ngModel)]="selectedLiquidity">
-                <option value="">All Liquidity</option>
-                <option *ngFor="let liquidity of liquidityLevels" [value]="liquidity">
-                  {{ liquidity }}
-                </option>
-              </select>
-            </div>
-          </div>
-          
-          <div class="row mt-3">
-            <div class="col-md-6">
-              <label for="minCAGR" class="form-label fw-semibold">Min CAGR: {{ minCAGR }}%</label>
-              <input type="range" class="form-range" id="minCAGR" min="0" max="50" step="0.5"
-                     [(ngModel)]="minCAGR">
-            </div>
-            <div class="col-md-6">
-              <label for="maxCAGR" class="form-label fw-semibold">Max CAGR: {{ maxCAGR }}%</label>
-              <input type="range" class="form-range" id="maxCAGR" min="0" max="50" step="0.5"
-                     [(ngModel)]="maxCAGR">
-            </div>
-          </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <label for="minCAGR" class="form-label fw-semibold">Min CAGR: {{ minCAGR }}%</label>
+                            <input type="range" class="form-range" id="minCAGR" min="0" max="50" step="0.5"
+                                [(ngModel)]="minCAGR">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="maxCAGR" class="form-label fw-semibold">Max CAGR: {{ maxCAGR }}%</label>
+                            <input type="range" class="form-range" id="maxCAGR" min="0" max="50" step="0.5"
+                                [(ngModel)]="maxCAGR">
+                        </div>
+                    </div>
 
-          <div class="row mt-4">
-            <div class="col-12">
-              <button class="btn btn-primary me-2" (click)="applyFilters()">
-                <i class="fas fa-search me-1"></i>Apply Filters
-              </button>
-              <button class="btn btn-outline-secondary me-2" (click)="clearFilters()">
-                <i class="fas fa-times me-1"></i>Clear Filters
-              </button>
-              <button class="btn btn-outline-info" (click)="loadRecommendations()">
-                <i class="fas fa-magic me-1"></i>Get Recommendations
-              </button>
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <button class="btn btn-primary me-2" (click)="applyFilters()">
+                                <i class="fas fa-search me-1"></i>Apply Filters
+                            </button>
+                            <button class="btn btn-outline-secondary me-2" (click)="clearFilters()">
+                                <i class="fas fa-times me-1"></i>Clear Filters
+                            </button>
+                            <button class="btn btn-outline-info" (click)="loadRecommendations()">
+                                <i class="fas fa-magic me-1"></i>Get Recommendations
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- Investment Options List Card -->
-      <div class="card shadow-sm">
-        <div class="card-header bg-light py-3 d-flex justify-content-between align-items-center">
-          <h5 class="card-title mb-0 fw-semibold">
-            <i class="fas fa-list text-muted me-2"></i>Investment Options
-            <span class="badge bg-primary ms-2">{{ investmentOptions.length }}</span>
-          </h5>
-          <div class="d-flex align-items-center">
-            <div class="spinner-border spinner-border-sm text-primary me-2" role="status" *ngIf="isLoading">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-            <span class="text-muted small" *ngIf="!isLoading">{{ investmentOptions.length }} options</span>
-          </div>
-        </div>
-        <div class="card-body p-0">
-          <!-- Loading State -->
-          <div *ngIf="isLoading" class="text-center py-5">
-            <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
-              <span class="visually-hidden">Loading investment options...</span>
-            </div>
-            <p class="text-muted">Loading investment options...</p>
-          </div>
+            <!-- Investment Options List Card -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-light py-3 d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0 fw-semibold">
+                        <i class="fas fa-list text-muted me-2"></i>Investment Options
+                        <span class="badge border border-warning text-success bg-transparent ms-2">{{ investmentOptions.length }}</span>
+                    </h5>
+                    <div class="d-flex align-items-center">
+                        <div class="spinner-border spinner-border-sm text-primary me-2" role="status" *ngIf="isLoading">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <span class="text-muted small" *ngIf="!isLoading">{{ investmentOptions.length }} options</span>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <!-- Loading State -->
+                    <div *ngIf="isLoading" class="text-center py-5">
+                        <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+                            <span class="visually-hidden">Loading investment options...</span>
+                        </div>
+                        <p class="text-muted">Loading investment options...</p>
+                    </div>
 
-          <!-- Empty State -->
-          <div *ngIf="!isLoading && investmentOptions.length === 0" class="text-center py-5">
-            <i class="fas fa-chart-line fa-4x text-muted mb-3 opacity-50"></i>
-            <h4 class="text-muted mb-3">No investment options found</h4>
-            <p class="text-muted mb-4">Start building your investment portfolio by adding options.</p>
-            <button class="btn btn-primary btn-lg" routerLink="/investment-options/new">
-              <i class="fas fa-plus me-2"></i>Add Investment Option
-            </button>
-          </div>
+                    <!-- Empty State -->
+                    <div *ngIf="!isLoading && investmentOptions.length === 0" class="text-center py-5">
+                        <i class="fas fa-chart-line fa-4x text-muted mb-3 opacity-50"></i>
+                        <h4 class="text-muted mb-3">No investment options found</h4>
+                        <p class="text-muted mb-4">Start building your investment portfolio by adding options.</p>
+                        <button class="btn btn-primary btn-lg" routerLink="/investment-options/new">
+                            <i class="fas fa-plus me-2"></i>Add Investment Option
+                        </button>
+                    </div>
 
-          <!-- Investment Options List -->
-          <div *ngIf="!isLoading && investmentOptions.length > 0" class="list-group list-group-flush">
-            <div *ngFor="let option of investmentOptions; let i = index" 
-                 class="list-group-item border-0 p-4" 
-                 [class.border-bottom]="i < investmentOptions.length - 1"
-                 [class.bg-light]="i % 2 === 0">
-              <div class="row align-items-center">
-                <div class="col-lg-8">
-                  <div class="d-flex align-items-start">
-                    <div class="flex-shrink-0 me-3">
-                      <span class="badge bg-primary rounded-circle p-2 d-flex align-items-center justify-content-center" 
+                    <!-- Investment Options List -->
+                    <div *ngIf="!isLoading && investmentOptions.length > 0" class="list-group list-group-flush">
+                        <div *ngFor="let option of investmentOptions; let i = index"
+                            class="list-group-item border-0 p-4"
+                            [class.border-bottom]="i < investmentOptions.length - 1" [class.bg-light]="i % 2 === 0">
+                            <div class="row align-items-center">
+                                <div class="col-lg-8">
+                                    <div class="d-flex align-items-start">
+                                        <div class="flex-shrink-0 me-3">
+                                            <!-- <span class="badge bg-primary rounded-circle p-2 d-flex align-items-center justify-content-center" 
                             style="width: 40px; height: 40px;">
                         <i class="fas {{ getCategoryIcon(option.category) }} fa-sm text-white"></i>
-                      </span>
-                    </div>
-                    <div class="flex-grow-1">
-                      <h5 class="mb-2 fw-semibold text-dark">{{ option.name }}</h5>
-                      
-                      <div class="d-flex flex-wrap gap-2 mb-3">
-                        <span class="badge bg-light text-dark border">
-                          <i class="fas {{ getCategoryIcon(option.category) }} me-1 text-primary"></i>
-                          {{ getCategoryDisplayName(option.category) }}
-                        </span>
-                        <span class="badge bg-{{ getRiskColor(option.riskLevel) }} text-white">
-                          <i class="fas fa-shield-alt me-1"></i>
-                          {{ option.riskLevel }} Risk
-                        </span>
-                        <span class="badge bg-light text-dark border">
-                          <i class="fas {{ getLiquidityIcon(option.liquidity) }} me-1 text-info"></i>
-                          {{ option.liquidity }} Liquidity
-                        </span>
-                      </div>
+                      </span> -->
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h5 class="mb-2 fw-semibold text-dark">{{ option.name }}</h5>
 
-                      <!-- CAGR Range -->
-                      <div class="mb-3">
-                        <div class="d-flex align-items-center mb-1">
-                          <span class="fw-semibold text-muted me-2">CAGR Range:</span>
-                          <span class="fw-bold text-success">
-                            {{ option.minCAGR }}% - {{ option.maxCAGR }}%
-                          </span>
-                          <span class="badge bg-success bg-opacity-20 text-success ms-2">
-                            Avg: {{ getAverageCAGR(option) | number:'1.1-1' }}%
-                          </span>
-                        </div>
-                        <div class="progress" style="height: 8px;">
-                          <div class="progress-bar bg-success" 
-                               [style.width]="((getAverageCAGR(option) - minCAGR) / (maxCAGR - minCAGR) * 100) + '%'"
-                               role="progressbar">
-                          </div>
-                        </div>
-                      </div>
+                                            <div class="d-flex flex-wrap gap-2 mb-3">
+                                                <span class="badge bg-light text-dark border">
+                                                    <i
+                                                        class="fas {{ getCategoryIcon(option.category) }} me-1 text-primary"></i>
+                                                    {{ getCategoryDisplayName(option.category) }}
+                                                </span>
+                                                <span class="badge bg-{{ getRiskColor(option.riskLevel) }} text-white">
+                                                    <i class="fas fa-shield-alt me-1"></i>
+                                                    {{ option.riskLevel }} Risk
+                                                </span>
+                                                <span class="badge bg-light text-dark border">
+                                                    <i
+                                                        class="fas {{ getLiquidityIcon(option.liquidity) }} me-1 text-info"></i>
+                                                    {{ option.liquidity }} Liquidity
+                                                </span>
+                                            </div>
 
-                      <!-- Additional Info -->
-                      <div *ngIf="option.taxEfficiency || option.notes" class="bg-light p-3 rounded">
-                        <div *ngIf="option.taxEfficiency" class="mb-2">
-                          <small class="fw-semibold text-dark">Tax Efficiency:</small>
-                          <small class="text-muted ms-2">{{ option.taxEfficiency }}</small>
+                                            <!-- CAGR Range -->
+                                            <div class="mb-3">
+                                                <div class="d-flex align-items-center mb-1">
+                                                    <span class="fw-semibold text-muted me-2">CAGR Range:</span>
+                                                    <span class="fw-bold text-success">
+                                                        {{ option.minCAGR }}% - {{ option.maxCAGR }}%
+                                                    </span>
+                                                    <span class="badge bg-opacity-20 text-success ms-2">
+                                                        Avg: {{ getAverageCAGR(option) | number:'1.1-1' }}%
+                                                    </span>
+                                                </div>
+                                                <div class="progress" style="height: 8px;">
+                                                    <div class="progress-bar bg-success"
+                                                        [style.width]="((getAverageCAGR(option) - minCAGR) / (maxCAGR - minCAGR) * 100) + '%'"
+                                                        role="progressbar">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Additional Info -->
+                                            <div *ngIf="option.taxEfficiency || option.notes"
+                                                class="bg-light p-3 rounded">
+                                                <div *ngIf="option.taxEfficiency" class="mb-2">
+                                                    <small class="fw-semibold text-dark">Tax Efficiency:</small>
+                                                    <small class="text-muted ms-2">{{ option.taxEfficiency }}</small>
+                                                </div>
+                                                <div *ngIf="option.notes">
+                                                    <small class="fw-semibold text-dark">Notes:</small>
+                                                    <small class="text-muted ms-2">{{ option.notes }}</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 mt-3 mt-lg-0">
+                                    <div class="d-flex flex-column gap-2">
+                                        <div class="d-flex gap-2 justify-content-lg-end">
+                                            <button class="btn btn-outline-primary btn-sm"
+                                                [routerLink]="['/investment-options', option.id, 'edit']"
+                                                [title]="'Edit ' + option.name">
+                                                <i class="fas fa-edit me-1"></i>Edit
+                                            </button>
+                                            <button class="btn btn-outline-danger btn-sm"
+                                                (click)="deleteInvestmentOption(option.id!)"
+                                                [title]="'Delete ' + option.name">
+                                                <i class="fas fa-trash me-1"></i>Delete
+                                            </button>
+                                        </div>
+
+                                        <div class="text-lg-end">
+                                            <small class="text-muted">
+                                                <i class="fas fa-calendar me-1"></i>
+                                                Created: {{ option.createdAt | date:'MMM d, y' }}
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div *ngIf="option.notes">
-                          <small class="fw-semibold text-dark">Notes:</small>
-                          <small class="text-muted ms-2">{{ option.notes }}</small>
-                        </div>
-                      </div>
                     </div>
-                  </div>
                 </div>
-                
-                <div class="col-lg-4 mt-3 mt-lg-0">
-                  <div class="d-flex flex-column gap-2">
-                    <div class="d-flex gap-2 justify-content-lg-end">
-                      <button class="btn btn-outline-primary btn-sm" 
-                              [routerLink]="['/investment-options', option.id, 'edit']"
-                              [title]="'Edit ' + option.name">
-                        <i class="fas fa-edit me-1"></i>Edit
-                      </button>
-                      <button class="btn btn-outline-danger btn-sm" 
-                              (click)="deleteInvestmentOption(option.id!)"
-                              [title]="'Delete ' + option.name">
-                        <i class="fas fa-trash me-1"></i>Delete
-                      </button>
-                    </div>
-                    
-                    <div class="text-lg-end">
-                      <small class="text-muted">
-                        <i class="fas fa-calendar me-1"></i>
-                        Created: {{ option.createdAt | date:'MMM d, y' }}
-                      </small>
-                    </div>
-                  </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Column -->
+        <div class="col-lg-4">
+            <!-- Recommendations Card -->
+            <div class="card shadow-sm mb-4" *ngIf="recommendations.length > 0">
+                <div class="card-header bg-success text-white py-3">
+                    <h5 class="card-title mb-0 fw-semibold">
+                        <i class="fas fa-star me-2"></i>Recommended Options
+                    </h5>
                 </div>
-              </div>
+                <div class="card-body">
+                    <div *ngFor="let rec of recommendations" class="mb-3 p-3 border rounded">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h6 class="fw-semibold mb-0">{{ rec.name }}</h6>
+                            <span class="badge bg-success">{{ rec.matchScore }}% Match</span>
+                        </div>
+                        <div class="d-flex flex-wrap gap-1 mb-2">
+                            <span class="badge bg-light text-dark border small">
+                                {{ rec.category }}
+                            </span>
+                            <span class="badge bg-{{ getRiskColor(rec.riskLevel) }} small">
+                                {{ rec.riskLevel }}
+                            </span>
+                            <span class="badge bg-light text-dark border small">
+                                {{ rec.liquidity }}
+                            </span>
+                        </div>
+                        <div class="text-center">
+                            <span class="fw-bold text-success h5">{{ rec.averageCAGR | number:'1.1-1' }}% CAGR</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
+
+            <!-- Category Distribution Card -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-light py-3">
+                    <h5 class="card-title mb-0 fw-semibold">
+                        <i class="fas fa-chart-pie text-muted me-2"></i>Options by Category
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div *ngIf="getCategoryStats().length === 0" class="text-center py-4">
+                        <i class="fas fa-chart-pie fa-2x text-muted mb-3 opacity-50"></i>
+                        <p class="text-muted mb-0">No category data available</p>
+                    </div>
+
+                    <div *ngFor="let stat of getCategoryStats()" class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div class="d-flex align-items-center">
+                                <i class="fas {{ getCategoryIcon(stat.category) }} text-primary me-2"></i>
+                                <span class="fw-semibold">{{ getCategoryDisplayName(stat.category) }}</span>
+                            </div>
+                            <span class="badge bg-primary">{{ stat.count }}</span>
+                        </div>
+
+                        <div class="progress mb-2" style="height: 10px;">
+                            <div class="progress-bar bg-primary" [style.width]="stat.percentage + '%'"
+                                role="progressbar">
+                            </div>
+                        </div>
+
+                        <div class="text-end">
+                            <small class="text-muted">{{ stat.percentage | number:'1.1-1' }}% of options</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions Card -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-light py-3">
+                    <h5 class="card-title mb-0 fw-semibold">
+                        <i class="fas fa-bolt text-muted me-2"></i>Quick Actions
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-outline-primary text-start" routerLink="/investment-options/new">
+                            <i class="fas fa-plus me-2"></i>Add New Option
+                        </button>
+                        <button class="btn btn-outline-success text-start" (click)="loadRecommendations()">
+                            <i class="fas fa-magic me-2"></i>Get Recommendations
+                        </button>
+                        <button class="btn btn-outline-info text-start" (click)="loadInvestmentOptions()">
+                            <i class="fas fa-sync-alt me-2"></i>Refresh Data
+                        </button>
+                        <button class="btn btn-outline-warning text-start" (click)="clearFilters()">
+                            <i class="fas fa-filter me-2"></i>Clear All Filters
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-
-    <!-- Sidebar Column -->
-    <div class="col-lg-4">
-      <!-- Recommendations Card -->
-      <div class="card shadow-sm mb-4" *ngIf="recommendations.length > 0">
-        <div class="card-header bg-success text-white py-3">
-          <h5 class="card-title mb-0 fw-semibold">
-            <i class="fas fa-star me-2"></i>Recommended Options
-          </h5>
-        </div>
-        <div class="card-body">
-          <div *ngFor="let rec of recommendations" class="mb-3 p-3 border rounded">
-            <div class="d-flex justify-content-between align-items-start mb-2">
-              <h6 class="fw-semibold mb-0">{{ rec.name }}</h6>
-              <span class="badge bg-success">{{ rec.matchScore }}% Match</span>
-            </div>
-            <div class="d-flex flex-wrap gap-1 mb-2">
-              <span class="badge bg-light text-dark border small">
-                {{ rec.category }}
-              </span>
-              <span class="badge bg-{{ getRiskColor(rec.riskLevel) }} small">
-                {{ rec.riskLevel }}
-              </span>
-              <span class="badge bg-light text-dark border small">
-                {{ rec.liquidity }}
-              </span>
-            </div>
-            <div class="text-center">
-              <span class="fw-bold text-success h5">{{ rec.averageCAGR | number:'1.1-1' }}% CAGR</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Category Distribution Card -->
-      <div class="card shadow-sm mb-4">
-        <div class="card-header bg-light py-3">
-          <h5 class="card-title mb-0 fw-semibold">
-            <i class="fas fa-chart-pie text-muted me-2"></i>Options by Category
-          </h5>
-        </div>
-        <div class="card-body">
-          <div *ngIf="getCategoryStats().length === 0" class="text-center py-4">
-            <i class="fas fa-chart-pie fa-2x text-muted mb-3 opacity-50"></i>
-            <p class="text-muted mb-0">No category data available</p>
-          </div>
-          
-          <div *ngFor="let stat of getCategoryStats()" class="mb-4">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <div class="d-flex align-items-center">
-                <i class="fas {{ getCategoryIcon(stat.category) }} text-primary me-2"></i>
-                <span class="fw-semibold">{{ getCategoryDisplayName(stat.category) }}</span>
-              </div>
-              <span class="badge bg-primary">{{ stat.count }}</span>
-            </div>
-            
-            <div class="progress mb-2" style="height: 10px;">
-              <div class="progress-bar bg-primary" 
-                   [style.width]="stat.percentage + '%'"
-                   role="progressbar">
-              </div>
-            </div>
-            
-            <div class="text-end">
-              <small class="text-muted">{{ stat.percentage | number:'1.1-1' }}% of options</small>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Quick Actions Card -->
-      <div class="card shadow-sm">
-        <div class="card-header bg-light py-3">
-          <h5 class="card-title mb-0 fw-semibold">
-            <i class="fas fa-bolt text-muted me-2"></i>Quick Actions
-          </h5>
-        </div>
-        <div class="card-body">
-          <div class="d-grid gap-2">
-            <button class="btn btn-outline-primary text-start" routerLink="/investment-options/new">
-              <i class="fas fa-plus me-2"></i>Add New Option
-            </button>
-            <button class="btn btn-outline-success text-start" (click)="loadRecommendations()">
-              <i class="fas fa-magic me-2"></i>Get Recommendations
-            </button>
-            <button class="btn btn-outline-info text-start" (click)="loadInvestmentOptions()">
-              <i class="fas fa-sync-alt me-2"></i>Refresh Data
-            </button>
-            <button class="btn btn-outline-warning text-start" (click)="clearFilters()">
-              <i class="fas fa-filter me-2"></i>Clear All Filters
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>

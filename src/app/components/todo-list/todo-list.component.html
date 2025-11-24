@@ -1,12 +1,29 @@
 <!-- components/todo-list/todo-list.component.html -->
 <div class="container mt-4">
-  <div class="header">
-    <h4>Todo List</h4>
-    <!-- <div class="user-info">
+    <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis border">
+        <div class="col-lg-12 px-0">
+            <h2 class="display-6 fst-italic text-primary-emphasis">Generate Regular Income From Stock Market
+                Investment</h2>
+            <p><em class="heading">Investing in real estate can lead to an increase in real estate prices, while
+                    investing in shares of
+                    companies will indirectly contribute to future job creation for your child.</em></p>
+            <ul>
+                <li>
+                    Rule No 1 : Never Loose your money
+                </li>
+            </ul>
+            <strong class="d-inline-block mr-2 text-primary-emphasis">Liquid Fund</strong> <-->
+                <strong class="d-inline-block mb-2 text-primary-emphasis">Gold Physical/MF</strong> <-->
+                    <strong class="d-inline-block mb-2 text-primary-emphasis">Nifty 100 Index MF</strong>
+        </div>
+    </div>
+    <div class="header">
+        <h4>Todo List</h4>
+        <!-- <div class="user-info">
       <span>Welcome, {{ getCurrentUser()?.username }}!</span>
       <button class="btn btn-outline-danger btn-sm" (click)="logout()">Logout</button>
     </div> -->
-    <!-- <div>
+        <!-- <div>
         <a class="nav-item nav-link link-body-emphasis text-primary-emphasis" routerLink="/goals"  routerLinkActive="active">Goals</a>
         <a class="nav-item nav-link link-body-emphasis text-primary-emphasis" routerLink="/investment-options"  routerLinkActive="active">Investment Options</a>
         <a class="nav-item nav-link link-body-emphasis text-primary-emphasis" routerLink="/income-sources"  routerLinkActive="active">Income Sources</a>
@@ -15,100 +32,73 @@
         <a class="nav-item nav-link link-body-emphasis text-primary-emphasis" routerLink="/emis"  routerLinkActive="active">EMIs</a>
         <a class="nav-item nav-link link-body-emphasis text-primary-emphasis" routerLink="/expenses"  routerLinkActive="active">Expenses</a>
     </div> -->
-  </div>
-
-  <div class="alert alert-danger" *ngIf="errorMessage" (click)="errorMessage = ''">
-    {{ errorMessage }}
-  </div>
-
-  <!-- Add Todo Form -->
-  <div class="add-todo-card card">
-    <div class="card-body">
-      <h5 class="card-title">Add New Todo</h5>
-      <div class="form-group">
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Todo title"
-          [(ngModel)]="newTodo.title"
-          (keyup.enter)="createTodo()"
-        >
-      </div>
-      <div class="form-group">
-        <textarea
-          class="form-control"
-          placeholder="Description (optional)"
-          [(ngModel)]="newTodo.description"
-          rows="2"
-        ></textarea>
-      </div>
-      <button
-        class="btn btn-primary"
-        (click)="createTodo()"
-        [disabled]="!newTodo.title.trim()"
-      >
-        Add Todo
-      </button>
-    </div>
-  </div>
-
-  <!-- Filter Buttons -->
-  <div class="filter-buttons">
-    <button
-      class="btn btn-outline-primary"
-      [class.active]="filter === 'all'"
-      (click)="onFilterChange('all')"
-    >
-      All ({{ allCount }})
-    </button>
-    <button
-      class="btn btn-outline-success"
-      [class.active]="filter === 'completed'"
-      (click)="onFilterChange('completed')"
-    >
-      Completed ({{ completedCount }})
-    </button>
-    <button
-      class="btn btn-outline-warning"
-      [class.active]="filter === 'pending'"
-      (click)="onFilterChange('pending')"
-    >
-      Pending ({{ pendingCount }})
-    </button>
-  </div>
-
-  <!-- Loading Spinner -->
-  <div class="text-center" *ngIf="isLoading">
-    <div class="spinner-border" role="status">
-      <span class="sr-only">Loading...</span>
-    </div>
-  </div>
-
-  <!-- Todo List -->
-  <div class="todo-list" *ngIf="!isLoading">
-    <div *ngIf="filteredTodos.length === 0" class="empty-state">
-      <p>No todos found.</p>
     </div>
 
-    <app-todo-item
-      *ngFor="let todo of filteredTodos"
-      [todo]="todo"
-      (toggle)="toggleTodoCompletion(todo)"
-      (delete)="deleteTodo(todo)"
-    ></app-todo-item>
-  </div>
+    <div class="alert alert-danger" *ngIf="errorMessage" (click)="errorMessage = ''">
+        {{ errorMessage }}
+    </div>
+
+    <!-- Add Todo Form -->
+    <div class="add-todo-card card">
+        <div class="card-body">
+            <h5 class="card-title">Add New Todo</h5>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Todo title" [(ngModel)]="newTodo.title"
+                    (keyup.enter)="createTodo()">
+            </div>
+            <div class="form-group">
+                <textarea class="form-control" placeholder="Description (optional)" [(ngModel)]="newTodo.description"
+                    rows="2"></textarea>
+            </div>
+            <button class="btn btn-primary" (click)="createTodo()" [disabled]="!newTodo.title.trim()">
+                Add Todo
+            </button>
+        </div>
+    </div>
+
+    <!-- Filter Buttons -->
+    <div class="filter-buttons">
+        <button class="btn btn-outline-primary" [class.active]="filter === 'all'" (click)="onFilterChange('all')">
+            All ({{ allCount }})
+        </button>
+        <button class="btn" [class.active]="filter === 'completed'"
+            (click)="onFilterChange('completed')">
+            Completed ({{ completedCount }})
+        </button>
+        <button class="btn" [class.active]="filter === 'pending'"
+            (click)="onFilterChange('pending')">
+            Pending ({{ pendingCount }})
+        </button>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div class="text-center" *ngIf="isLoading">
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+
+    <!-- Todo List -->
+    <div class="todo-list" *ngIf="!isLoading">
+        <div *ngIf="filteredTodos.length === 0" class="empty-state">
+            <p>No todos found.</p>
+        </div>
+
+        <app-todo-item *ngFor="let todo of filteredTodos" [todo]="todo" (toggle)="toggleTodoCompletion(todo)"
+            (delete)="deleteTodo(todo)"></app-todo-item>
+    </div>
 </div>
 
 <!-- Toast Container -->
 <div class="toast-container position-fixed bottom-0 end-0 p-3">
-  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="toast-header">
-      <i class="fas fa-bell text-primary me-2"></i>
-      <strong class="me-auto">Notification</strong>
-      <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <i class="fas fa-bell text-primary me-2"></i>
+            <strong class="me-auto">Notification</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+        </div>
+        <div class="toast-body" id="toastMessage">
+            <!-- Toast message will appear here -->
+        </div>
     </div>
-    <div class="toast-body" id="toastMessage">
-      <!-- Toast message will appear here -->
-    </div>
-  </div>
 </div>
