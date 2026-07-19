@@ -1,0 +1,78 @@
+<div class="card border-0 shadow-sm rounded-4">
+  <div class="card-body p-4">
+
+    <h5 class="text-primary-emphasis">SIP Calculator</h5>
+
+    <div class="row g-3">
+      
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Investment Amount (Per Installment)</label>
+        <input type="number" class="form-control form-control-lg rounded-3"
+               [(ngModel)]="investmentAmount">
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Investment Frequency</label>
+        <select class="form-select form-select-lg rounded-3"
+                [(ngModel)]="frequency">
+          <option value="monthly">Monthly</option>
+          <option value="quarterly">Quarterly</option>
+          <option value="yearly">Yearly</option>
+        </select>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Annual Return (%)</label>
+        <input type="number" class="form-control form-control-lg rounded-3"
+               [(ngModel)]="annualReturnRate">
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Time Period (Years)</label>
+        <input type="number" class="form-control form-control-lg rounded-3"
+               [(ngModel)]="timePeriodYears">
+      </div>
+    </div>
+
+    <button class="btn btn-outline-warning btn-lg w-100 mt-4 rounded-3 text-primary-emphasis" style="background-color: transparent;"
+            (click)="calculate()">
+      Calculate Returns
+    </button>
+
+    <div *ngIf="totalInvested" class="mt-4">
+
+      <h5 class="fw-bold mb-3">Results</h5>
+
+      <ul class="list-group shadow-sm rounded-4">
+        <li class="list-group-item d-flex justify-content-between">
+          <span>Total Money Invested</span>
+          <strong>₹ {{ format(totalInvested) }}</strong>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+          <span>Total Interest Earned</span>
+          <strong>₹ {{ format(totalInterestEarned) }}</strong>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+          <span>Total Money Received</span>
+          <strong>₹ {{ format(totalMaturityAmount) }}</strong>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Formula Section -->
+    <div class="mt-4 p-3 bg-light border rounded-4">
+      <h5 class="fw-semibold">Formula Used</h5>
+
+      <pre class="bg-white p-3 rounded-3 border shadow-sm">
+FV = P × ((1 + r)ⁿ − 1) / r
+      </pre>
+
+      <small class="text-muted">
+        P = Installment amount  
+        r = Rate per period  
+        n = Total number of installments
+      </small>
+    </div>
+
+  </div>
+</div>

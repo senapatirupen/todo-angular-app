@@ -1,0 +1,57 @@
+/* Global Styles */
+.completed {
+  text-decoration: line-through;
+  color: #6c757d;
+}
+
+.todo-item {
+  transition: all 0.3s ease;
+  border-left: 4px solid transparent;
+}
+
+.todo-item:hover {
+  background-color: #f8f9fa;
+  border-left-color: #007bff;
+}
+
+.todo-item.completed-item {
+  border-left-color: #28a745;
+}
+
+.todo-item.pending-item {
+  border-left-color: #ffc107;
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.stats-card {
+  transition: transform 0.3s ease;
+}
+
+.stats-card:hover {
+  transform: translateY(-5px);
+}
+
+.btn.active {
+  font-weight: bold;
+}
+
+/* Custom spacing */
+.container-fluid {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 1200px) {
+  .container-fluid {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}

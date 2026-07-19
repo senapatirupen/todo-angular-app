@@ -1,0 +1,88 @@
+<div class="card border-0 shadow-sm rounded-4">
+  <div class="card-body p-4">
+
+    <h5 class="text-primary-emphasis">Rule of 72 Calculator</h5>
+
+    <!-- Mode selection -->
+    <div class="mb-3">
+      <label class="form-label fw-semibold">Choose Mode</label>
+      <div class="btn-group w-100">
+        <button
+          type="button"
+          class="btn text-primary-emphasis"
+          style="background-color: transparent;"
+          [ngClass]="mode === 'yearsFromRate' ? 'btn-primary' : 'btn-outline-primary'"
+          (click)="mode = 'yearsFromRate'; result = null;">
+          Years to Double (from Return %)
+        </button>
+        <button
+          type="button"
+          class="btn text-primary-emphasis"
+          style="background-color: transparent;"
+          [ngClass]="mode === 'rateFromYears' ? 'btn-primary' : 'btn-outline-primary'"
+          (click)="mode = 'rateFromYears'; result = null;">
+          Required Return % (from Years)
+        </button>
+      </div>
+    </div>
+
+    <!-- Input for Mode 1: Years from Rate -->
+    <div *ngIf="mode === 'yearsFromRate'" class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Annual Return (%)</label>
+        <input type="number"
+               class="form-control form-control-lg rounded-3"
+               [(ngModel)]="annualReturnRate">
+      </div>
+    </div>
+
+    <!-- Input for Mode 2: Rate from Years -->
+    <div *ngIf="mode === 'rateFromYears'" class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Years to Double</label>
+        <input type="number"
+               class="form-control form-control-lg rounded-3"
+               [(ngModel)]="yearsToDouble">
+      </div>
+    </div>
+
+    <button class="btn btn-outline-warning btn-lg w-100 mt-4 rounded-3 text-primary-emphasis" style="background-color: transparent;"
+            (click)="calculate()">
+      Calculate
+    </button>
+
+    <!-- Result -->
+    <div *ngIf="result !== null" class="mt-4">
+      <h5 class="fw-bold mb-2">Result</h5>
+
+      <div class="alert alert-success rounded-4">
+        <ng-container *ngIf="mode === 'yearsFromRate'; else rateResult">
+          At an annual return of <strong>{{ annualReturnRate }}%</strong>,  
+          your money will roughly double in  
+          <strong>{{ format(result) }} years</strong>.
+        </ng-container>
+
+        <ng-template #rateResult>
+          To double your money in <strong>{{ yearsToDouble }} years</strong>,  
+          you need an approximate annual return of  
+          <strong>{{ format(result) }}%</strong>.
+        </ng-template>
+      </div>
+    </div>
+
+    <!-- Formula explain -->
+    <div class="mt-3 p-3 bg-light border rounded-4">
+      <h6 class="fw-semibold">Rule of 72</h6>
+      <pre class="bg-white p-3 rounded-3 border shadow-sm mb-2">
+Years to Double  ≈  72 / Annual Return (%)
+Return (%)       ≈  72 / Years to Double
+      </pre>
+      <small class="text-muted">
+        The Rule of 72 is an approximation to quickly estimate how long it takes
+        to double your money at a fixed annual rate (or what rate is required
+        to double in a given time).
+      </small>
+    </div>
+
+  </div>
+</div>

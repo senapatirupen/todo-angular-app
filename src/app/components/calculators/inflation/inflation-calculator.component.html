@@ -1,0 +1,85 @@
+<div class="card border-0 shadow-sm rounded-4">
+  <div class="card-body p-4">
+
+    <h5 class="text-primary-emphasis">Inflation Calculator – Future Expenditure</h5>
+
+    <!-- Inputs -->
+    <div class="row g-3">
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Current Annual Expense (₹)</label>
+        <input type="number"
+               class="form-control form-control-lg rounded-3"
+               [(ngModel)]="currentAnnualExpense">
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Inflation Rate (% p.a.)</label>
+        <input type="number"
+               class="form-control form-control-lg rounded-3"
+               [(ngModel)]="inflationRate">
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Projection Period (Years)</label>
+        <input type="number"
+               class="form-control form-control-lg rounded-3"
+               [(ngModel)]="years">
+      </div>
+    </div>
+
+    <button class="btn btn-outline-warning btn-lg w-100 mt-4 rounded-3 text-primary-emphasis" style="background-color: transparent;"
+            (click)="calculate()">
+      Project Future Expenditure
+    </button>
+
+    <!-- Results -->
+    <div *ngIf="futureAnnualExpense !== null" class="mt-4">
+
+      <h5 class="fw-bold mb-3">Projection Summary</h5>
+
+      <ul class="list-group shadow-sm rounded-4 mb-3">
+        <li class="list-group-item d-flex justify-content-between">
+          <span>Annual Expense After {{ years }} Years</span>
+          <strong>₹ {{ formatAmount(futureAnnualExpense) }}</strong>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+          <span>Total Expense (Without Inflation)</span>
+          <strong>₹ {{ formatAmount(totalWithoutInflation) }}</strong>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+          <span>Total Expense (With Inflation)</span>
+          <strong>₹ {{ formatAmount(totalWithInflation) }}</strong>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+          <span>Extra Paid Due to Inflation</span>
+          <strong class="text-danger">₹ {{ formatAmount(extraDueToInflation) }}</strong>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Formula explanation -->
+    <div class="mt-3 p-3 bg-light border rounded-4">
+      <h6 class="fw-semibold">Formula Used (Inflation Projection)</h6>
+      <pre class="bg-white p-3 rounded-3 border shadow-sm mb-2">
+Future Annual Expense:
+  Eₙ = E₀ × (1 + i)ⁿ
+
+Total with inflation:
+  TotalInflation = E₀ × ((1 + i)ⁿ − 1) / i
+
+Total without inflation:
+  TotalFlat = E₀ × n
+
+Where:
+  E₀ = Current annual expense
+  i  = Inflation rate (in decimal)
+  n  = Number of years
+      </pre>
+      <small class="text-muted">
+        This projects how your yearly living cost grows with inflation and
+        how much extra you pay in total compared to a no-inflation world.
+      </small>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,85 @@
+<div class="card border-0 shadow-sm rounded-4">
+  <div class="card-body p-4">
+
+    <h5 class="text-primary-emphasis">Monthly Saving for Goal Amount</h5>
+
+    <!-- Inputs -->
+    <div class="row g-3">
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Required Goal Amount (₹)</label>
+        <input type="number"
+               class="form-control form-control-lg rounded-3"
+               [(ngModel)]="goalAmount">
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Expected Annual Return (% p.a.)</label>
+        <input type="number"
+               class="form-control form-control-lg rounded-3"
+               [(ngModel)]="annualInterestRate">
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Time to Goal (Years)</label>
+        <input type="number"
+               class="form-control form-control-lg rounded-3"
+               [(ngModel)]="yearsToGoal">
+      </div>
+    </div>
+
+    <button class="btn btn-outline-warning btn-lg w-100 mt-4 rounded-3 text-primary-emphasis" style="background-color: transparent;"
+            (click)="calculate()">
+      Calculate Monthly Investment
+    </button>
+
+    <!-- Results -->
+    <div *ngIf="monthlyInvestment !== null" class="mt-4">
+
+      <h5 class="fw-bold mb-3">Result</h5>
+
+      <ul class="list-group shadow-sm rounded-4 mb-3">
+        <li class="list-group-item d-flex justify-content-between">
+          <span>Required Monthly Investment</span>
+          <strong>₹ {{ formatAmount(monthlyInvestment) }}</strong>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+          <span>Total Tenure</span>
+          <strong>{{ formatTenure(totalTenureMonths) }}</strong>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+          <span>Total Amount Invested</span>
+          <strong>₹ {{ formatAmount(totalInvested) }}</strong>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+          <span>Interest Earned</span>
+          <strong class="text-success">₹ {{ formatAmount(interestEarned) }}</strong>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+          <span>Total Amount Received (Goal)</span>
+          <strong>₹ {{ formatAmount(totalAmountReceived) }}</strong>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Formula explanation -->
+    <div class="mt-3 p-3 bg-light border rounded-4">
+      <h6 class="fw-semibold">Formula Used (Goal-based Monthly Saving)</h6>
+      <pre class="bg-white p-3 rounded-3 border shadow-sm mb-2">
+FV = P × ((1 + r)ⁿ − 1) / r
+
+⇒ P = FV × r / ((1 + r)ⁿ − 1)
+
+Where:
+ FV = Goal amount
+ P  = Monthly investment
+ r  = Monthly rate (Annual % / 12 / 100)
+ n  = Total months (Years × 12)
+      </pre>
+      <small class="text-muted">
+        We assume you invest at the end of each month (like a standard SIP),
+        at a fixed annual return converted to monthly compounding.
+      </small>
+    </div>
+
+  </div>
+</div>

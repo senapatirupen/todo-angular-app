@@ -1,0 +1,18 @@
+.nav-link {
+    padding-right: 0;
+    padding-left: 0;
+    color: inherit !important;
+    &:hover,
+    &:focus {
+        border-bottom-color: #ec0000;
+    }
+
+    &:active {
+        border-bottom-color: #ec0000;
+        
+    }
+}
+
+.heading {
+    color: #ec0000;
+}

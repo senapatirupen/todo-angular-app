@@ -1,0 +1,118 @@
+<div class="card border-0 shadow-sm rounded-4">
+  <div class="card-body p-4">
+
+    <h5 class="text-primary-emphasis">Home Loan Part Payment Calculator</h5>
+
+    <!-- Inputs -->
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Outstanding Principal (₹)</label>
+        <input type="number"
+               class="form-control form-control-lg rounded-3"
+               [(ngModel)]="outstandingPrincipal">
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Interest Rate (% p.a.)</label>
+        <input type="number"
+               class="form-control form-control-lg rounded-3"
+               [(ngModel)]="annualInterestRate">
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Tenure Left (Years)</label>
+        <input type="number"
+               class="form-control form-control-lg rounded-3"
+               [(ngModel)]="tenureLeftYears">
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Expected Part Payment / Year (₹)</label>
+        <input type="number"
+               class="form-control form-control-lg rounded-3"
+               [(ngModel)]="partPaymentPerYear">
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Number of Years for Part Payment</label>
+        <input type="number"
+               class="form-control form-control-lg rounded-3"
+               [(ngModel)]="partPaymentYears">
+      </div>
+    </div>
+
+    <button class="btn btn-outline-warning btn-lg w-100 mt-4 rounded-3 text-primary-emphasis" style="background-color: transparent;"
+            (click)="calculate()">
+      Calculate Impact
+    </button>
+
+    <!-- Results -->
+    <div *ngIf="currentEmi" class="mt-4">
+
+      <h5 class="fw-bold mb-3">Current Loan (Without Part Payment)</h5>
+
+      <ul class="list-group shadow-sm rounded-4 mb-3">
+        <li class="list-group-item d-flex justify-content-between">
+          <span>Current EMI (Monthly)</span>
+          <strong>₹ {{ formatAmount(currentEmi) }}</strong>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+          <span>Total Interest (Remaining)</span>
+          <strong>₹ {{ formatAmount(currentTotalInterest) }}</strong>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+          <span>Current Tenure Left</span>
+          <strong>{{ formatTenure(currentTenureMonths) }}</strong>
+        </li>
+      </ul>
+
+      <h5 class="fw-bold mb-3">After Part Payments</h5>
+
+      <ul class="list-group shadow-sm rounded-4 mb-3">
+        <li class="list-group-item d-flex justify-content-between">
+          <span>Outstanding Principal After {{ partPaymentYears }} Years</span>
+          <strong>₹ {{ formatAmount(newOutstandingAfterYears) }}</strong>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+          <span>Total Interest with Part Payment</span>
+          <strong>₹ {{ formatAmount(newTotalInterestWithPartPay) }}</strong>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+          <span>Interest Saved</span>
+          <strong class="text-success">₹ {{ formatAmount(interestSaved) }}</strong>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+          <span>New Tenure</span>
+          <strong>{{ formatTenure(newTenureMonths) }}</strong>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+          <span>Tenure Reduced</span>
+          <strong class="text-success">{{ formatTenure(tenureReducedMonths) }}</strong>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Formula explanation -->
+    <div class="mt-3 p-3 bg-light border rounded-4">
+      <h6 class="fw-semibold">How This Works</h6>
+      <pre class="bg-white p-3 rounded-3 border shadow-sm mb-2">
+EMI = P × r × (1 + r)ⁿ / ((1 + r)ⁿ − 1)
+
+Where:
+ P = Outstanding principal
+ r = Monthly interest rate (Annual % / 12 / 100)
+ n = Remaining months
+
+Every year:
+ - Normal EMI runs every month.
+ - At the end of each year, extra part payment reduces principal.
+ - EMI stays same, so tenure automatically reduces.
+      </pre>
+      <small class="text-muted">
+        We simulate month-by-month to calculate total interest, new tenure,
+        and interest saved due to yearly part payments.
+      </small>
+    </div>
+
+  </div>
+</div>

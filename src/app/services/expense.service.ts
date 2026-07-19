@@ -130,7 +130,7 @@ export class ExpenseService {
   }
 
   getUserCategories(): Observable<string[]> {
-    return this.http.get<string[]>(`${this.apiUrl}/expenses/categories`, { headers: this.getAuthHeaders() })
+    return this.http.get<string[]>(`${this.apiUrl}/expenses/category`, { headers: this.getAuthHeaders() })
       .pipe(catchError(this.handleError));
   }
 

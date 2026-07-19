@@ -29,6 +29,15 @@ import { ExpenseListComponent } from './components/expense-list/expense-list.com
 import { ExpenseFormComponent } from './components/expense-form/expense-form.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { InvestmentComponent } from './components/calculators/investment/investment.component';
+import { SipCalculatorComponent } from './components/calculators/sip-calculator/sip-calculator.component';
+import { LumpsumCalculatorComponent } from './components/calculators/lumpsum-calculator/lumpsum-calculator.component';
+import { Rule72CalculatorComponent } from './components/calculators/rule72-calculator/rule72-calculator.component';
+import { HomeLoanPartPaymentCalculatorComponent } from './components/calculators/home-loan-part-payment/home-loan-part-payment-calculator.component';
+import { GoalMonthlySavingsCalculatorComponent } from './components/calculators/goal-monthly-savings/goal-monthly-savings-calculator.component';
+import { EmiCalculatorComponent } from './components/calculators/emi/emi-calculator.component';
+import { InflationCalculatorComponent } from './components/calculators/inflation/inflation-calculator.component';
+import { MultiLoanPartPaymentCalculatorComponent } from './components/calculators/multi-loan-part-payment/multi-loan-part-payment-calculator.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +61,16 @@ import { FooterComponent } from './components/footer/footer.component';
     ExpenseListComponent,
     ExpenseFormComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    InvestmentComponent,
+    SipCalculatorComponent,
+    LumpsumCalculatorComponent,
+    Rule72CalculatorComponent,
+    HomeLoanPartPaymentCalculatorComponent,
+    GoalMonthlySavingsCalculatorComponent,
+    EmiCalculatorComponent,
+    InflationCalculatorComponent,
+    MultiLoanPartPaymentCalculatorComponent
   ],
   imports: [
     BrowserModule,

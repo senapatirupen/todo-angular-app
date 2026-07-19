@@ -1,0 +1,115 @@
+<div class="container py-4">
+    <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis border">
+        <div class="col-lg-12 px-0">
+            <h2 class="display-6 fst-italic text-primary-emphasis">Generate Regular Income From Stock Market
+                Investment</h2>
+            <p>Investing in real estate can lead to an increase in real estate prices, while
+                    investing in shares of
+                    companies will indirectly contribute to future job creation for your child.</p>
+            <p><em class="heading">If you cannot give 100% to your current job, you are unlikely to give 100% to your personal goals or
+                responsibilities—because effort is a habit, not a situation.</em></p>
+            <ul>
+                <li>
+                    Rule No 1 : Never Loose your money
+                </li>
+                <li>
+                    Rule No 2 : Learn Right Investment For You
+                </li>
+                <li>
+                    Rule No 3 : Never spent money for sort term happiness or luxuries
+                </li>
+            </ul>
+            <strong class="d-inline-block mr-2 text-primary-emphasis">Liquid Fund</strong> <-->
+                <strong class="d-inline-block mb-2 text-primary-emphasis">Gold Physical/MF</strong> <-->
+                    <strong class="d-inline-block mb-2 text-primary-emphasis">Nifty 100 Index MF</strong>
+        </div>
+    </div>
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header rounded-top-4 py-3">
+            <h3 class="mb-0 text-center text-primary-emphasis">Investment Calculators</h3>
+        </div>
+
+        <div class="card-body p-4">
+
+            <!-- Navigation -->
+            <ul class="nav nav-underline justify-content-center">
+                <li class="nav-item">
+                    <button class="nav-link px-2 py-2" [ngClass]="{ 'active': selectedCalculator === 'sip' }"
+                        (click)="selectCalculator('sip')">
+                        SIP Calculator
+                    </button>
+                </li>
+
+                <li class="nav-item">
+                    <button class="nav-link px-2 py-2" [ngClass]="{ 'active': selectedCalculator === 'lumpsum' }"
+                        (click)="selectCalculator('lumpsum')">
+                        Lumpsum Calculator
+                    </button>
+                </li>
+
+                <li class="nav-item">
+                    <button class="nav-link px-2 py-2" [ngClass]="{ 'active': selectedCalculator === 'rule72' }"
+                        (click)="selectCalculator('rule72')">
+                        Rule of 72
+                    </button>
+                </li>
+
+                <li class="nav-item">
+                    <button class="nav-link px-2 py-2"
+                        [ngClass]="{ 'active': selectedCalculator === 'homeLoanPartPayment' }"
+                        (click)="selectCalculator('homeLoanPartPayment')">
+                        Loan Part Payment
+                    </button>
+                </li>
+
+                <li class="nav-item">
+                    <button class="nav-link px-2 py-2"
+                        [ngClass]="{ 'active': selectedCalculator === 'goalMonthlySaving' }"
+                        (click)="selectCalculator('goalMonthlySaving')">
+                        Monthly Saving
+                    </button>
+                </li>
+
+                <li class="nav-item">
+                    <button class="nav-link px-2 py-2" [ngClass]="{ 'active': selectedCalculator === 'emi' }"
+                        (click)="selectCalculator('emi')">
+                        EMI Calculator
+                    </button>
+                </li>
+
+                <li class="nav-item">
+                    <button class="nav-link px-2 py-2" [ngClass]="{ 'active': selectedCalculator === 'inflation' }"
+                        (click)="selectCalculator('inflation')">
+                        Inflation Calculator
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link px-2 py-2"
+                        [ngClass]="{ 'active': selectedCalculator === 'multiLoanPartPayment' }"
+                        (click)="selectCalculator('multiLoanPartPayment')">
+                        Multi Loan Part Payment
+                    </button>
+                </li>
+                <!-- Add more child calculators easily -->
+            </ul>
+
+            <hr class="text-secondary" />
+
+            <!-- Child calculator container -->
+            <div class="p-3">
+                <app-sip-calculator *ngIf="selectedCalculator === 'sip'"></app-sip-calculator>
+                <app-lumpsum-calculator *ngIf="selectedCalculator === 'lumpsum'"></app-lumpsum-calculator>
+                <app-rule72-calculator *ngIf="selectedCalculator === 'rule72'"></app-rule72-calculator>
+                <app-home-loan-part-payment-calculator *ngIf="selectedCalculator === 'homeLoanPartPayment'">
+                </app-home-loan-part-payment-calculator>
+                <app-goal-monthly-savings-calculator *ngIf="selectedCalculator === 'goalMonthlySaving'">
+                </app-goal-monthly-savings-calculator>
+                <app-emi-calculator *ngIf="selectedCalculator === 'emi'"></app-emi-calculator>
+                <app-inflation-calculator *ngIf="selectedCalculator === 'inflation'"></app-inflation-calculator>
+                <app-multi-loan-part-payment-calculator *ngIf="selectedCalculator === 'multiLoanPartPayment'">
+                </app-multi-loan-part-payment-calculator>
+            </div>
+
+        </div>
+    </div>
+</div>

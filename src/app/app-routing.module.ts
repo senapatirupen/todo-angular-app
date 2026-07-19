@@ -19,12 +19,18 @@ import { EMIListComponent } from './components/emi-list/emi-list.component';
 import { EMIFormComponent } from './components/emi-form/emi-form.component';
 import { ExpenseListComponent } from './components/expense-list/expense-list.component';
 import { ExpenseFormComponent } from './components/expense-form/expense-form.component';
+import { InvestmentComponent } from './components/calculators/investment/investment.component';
+import { SipCalculatorComponent } from './components/calculators/sip-calculator/sip-calculator.component';
+import { LumpsumCalculatorComponent } from './components/calculators/lumpsum-calculator/lumpsum-calculator.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/todos', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'todos', component: TodoListComponent, canActivate: [AuthGuard] },
+  { path: 'investments', component: InvestmentComponent},
+  { path: 'sip-calc', component: SipCalculatorComponent},
+  { path: 'lumpsum-calc', component: LumpsumCalculatorComponent},
   { path: 'goals', component: GoalListComponent, canActivate: [AuthGuard] },
   // { path: 'goals/view/:id', component: GoalFormComponent, canActivate: [AuthGuard] },
   { path: 'goals/:id/edit', component: GoalFormComponent, canActivate: [AuthGuard] },

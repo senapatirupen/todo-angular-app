@@ -11,6 +11,12 @@
                 <li>
                     Rule No 1 : Never Loose your money
                 </li>
+                <li>
+                    Rule No 2 : Learn Right Investment For You
+                </li>
+                <li>
+                    Rule No 3 : Never spent money for sort term happiness or luxuries
+                </li>
             </ul>
             <strong class="d-inline-block mr-2 text-primary-emphasis">Liquid Fund</strong> <-->
                 <strong class="d-inline-block mb-2 text-primary-emphasis">Gold Physical/MF</strong> <-->
@@ -46,11 +52,11 @@
                 <input type="text" class="form-control" placeholder="Todo title" [(ngModel)]="newTodo.title"
                     (keyup.enter)="createTodo()">
             </div>
-            <div class="form-group">
+            <div class="form-group mt-1">
                 <textarea class="form-control" placeholder="Description (optional)" [(ngModel)]="newTodo.description"
                     rows="2"></textarea>
             </div>
-            <button class="btn btn-primary" (click)="createTodo()" [disabled]="!newTodo.title.trim()">
+            <button class="btn btn-primary mt-1" (click)="createTodo()" [disabled]="!newTodo.title.trim()">
                 Add Todo
             </button>
         </div>

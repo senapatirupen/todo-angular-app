@@ -1,0 +1,204 @@
+<div class="card border-0 shadow-sm rounded-4">
+  <div class="card-body p-4">
+
+    <h5 class="text-primary-emphasis">Pro Rata Multi-Loan Part Payment</h5>
+
+    <!-- Lump Sum Source -->
+    <div class="row g-3 mb-3">
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Source Name</label>
+        <input type="text"
+               class="form-control form-control-lg rounded-3"
+               [(ngModel)]="sourceName">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Lump Sum Amount (₹)</label>
+        <input type="number"
+               class="form-control form-control-lg rounded-3"
+               [(ngModel)]="lumpSumAmount">
+      </div>
+    </div>
+
+    <!-- Loan Inputs -->
+    <h5 class="fw-bold mt-3">Loan Details</h5>
+
+    <div class="row g-3 mt-1">
+      <!-- Car Loan -->
+      <div class="col-md-4">
+        <div class="border rounded-4 p-3 h-100">
+          <h6 class="fw-semibold">{{ carLoan.name }}</h6>
+          <label class="form-label mt-2">Principal (₹)</label>
+          <input type="number" class="form-control form-control-sm rounded-3"
+                 [(ngModel)]="carLoan.principal">
+
+          <label class="form-label mt-2">Interest Rate (% p.a.)</label>
+          <input type="number" class="form-control form-control-sm rounded-3"
+                 [(ngModel)]="carLoan.annualRate">
+
+          <label class="form-label mt-2">Tenure Left (Years)</label>
+          <input type="number" class="form-control form-control-sm rounded-3"
+                 [(ngModel)]="carLoan.tenureYears">
+        </div>
+      </div>
+
+      <!-- Home Loan -->
+      <div class="col-md-4">
+        <div class="border rounded-4 p-3 h-100">
+          <h6 class="fw-semibold">{{ homeLoan.name }}</h6>
+          <label class="form-label mt-2">Principal (₹)</label>
+          <input type="number" class="form-control form-control-sm rounded-3"
+                 [(ngModel)]="homeLoan.principal">
+
+          <label class="form-label mt-2">Interest Rate (% p.a.)</label>
+          <input type="number" class="form-control form-control-sm rounded-3"
+                 [(ngModel)]="homeLoan.annualRate">
+
+          <label class="form-label mt-2">Tenure Left (Years)</label>
+          <input type="number" class="form-control form-control-sm rounded-3"
+                 [(ngModel)]="homeLoan.tenureYears">
+        </div>
+      </div>
+
+      <!-- Personal Loan -->
+      <div class="col-md-4">
+        <div class="border rounded-4 p-3 h-100">
+          <h6 class="fw-semibold">{{ personalLoan.name }}</h6>
+          <label class="form-label mt-2">Principal (₹)</label>
+          <input type="number" class="form-control form-control-sm rounded-3"
+                 [(ngModel)]="personalLoan.principal">
+
+          <label class="form-label mt-2">Interest Rate (% p.a.)</label>
+          <input type="number" class="form-control form-control-sm rounded-3"
+                 [(ngModel)]="personalLoan.annualRate">
+
+          <label class="form-label mt-2">Tenure Left (Years)</label>
+          <input type="number" class="form-control form-control-sm rounded-3"
+                 [(ngModel)]="personalLoan.tenureYears">
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-outline-warning btn-lg w-100 mt-4 rounded-3 text-primary-emphasis" style="background-color: transparent;"
+            (click)="calculate()">
+      Calculate Pro Rata Distribution
+    </button>
+
+    <!-- Results -->
+    <div *ngIf="results" class="mt-4">
+
+      <h5 class="fw-bold mb-3">Distribution & Savings Summary</h5>
+
+      <div class="row g-3">
+        <!-- Car Loan Result -->
+        <div class="col-md-4" *ngIf="results['car']">
+          <div class="card border-0 shadow-sm rounded-4 h-100">
+            <div class="card-body">
+              <h6 class="fw-semibold">Car Loan</h6>
+              <p class="mb-1">
+                <strong>Part Payment:</strong>
+                ₹ {{ formatAmount(results['car'].allocatedPartPayment) }}
+              </p>
+              <p class="mb-1">
+                <strong>Interest Saved:</strong>
+                ₹ {{ formatAmount(results['car'].interestSaved) }}
+              </p>
+              <p class="mb-1">
+                <strong>New Principal:</strong>
+                ₹ {{ formatAmount(results['car'].newOutstandingPrincipal) }}
+              </p>
+              <p class="mb-1">
+                <strong>Tenure Reduced:</strong>
+                {{ formatTenure(results['car'].tenureReducedMonths) }}
+              </p>
+              <p class="mb-0">
+                <strong>New Tenure:</strong>
+                {{ formatTenure(results['car'].newTenureMonths) }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Home Loan Result -->
+        <div class="col-md-4" *ngIf="results['home']">
+          <div class="card border-0 shadow-sm rounded-4 h-100">
+            <div class="card-body">
+              <h6 class="fw-semibold">Home Loan</h6>
+              <p class="mb-1">
+                <strong>Part Payment:</strong>
+                ₹ {{ formatAmount(results['home'].allocatedPartPayment) }}
+              </p>
+              <p class="mb-1">
+                <strong>Interest Saved:</strong>
+                ₹ {{ formatAmount(results['home'].interestSaved) }}
+              </p>
+              <p class="mb-1">
+                <strong>New Principal:</strong>
+                ₹ {{ formatAmount(results['home'].newOutstandingPrincipal) }}
+              </p>
+              <p class="mb-1">
+                <strong>Tenure Reduced:</strong>
+                {{ formatTenure(results['home'].tenureReducedMonths) }}
+              </p>
+              <p class="mb-0">
+                <strong>New Tenure:</strong>
+                {{ formatTenure(results['home'].newTenureMonths) }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Personal Loan Result -->
+        <div class="col-md-4" *ngIf="results['personal']">
+          <div class="card border-0 shadow-sm rounded-4 h-100">
+            <div class="card-body">
+              <h6 class="fw-semibold">Personal Loan</h6>
+              <p class="mb-1">
+                <strong>Part Payment:</strong>
+                ₹ {{ formatAmount(results['personal'].allocatedPartPayment) }}
+              </p>
+              <p class="mb-1">
+                <strong>Interest Saved:</strong>
+                ₹ {{ formatAmount(results['personal'].interestSaved) }}
+              </p>
+              <p class="mb-1">
+                <strong>New Principal:</strong>
+                ₹ {{ formatAmount(results['personal'].newOutstandingPrincipal) }}
+              </p>
+              <p class="mb-1">
+                <strong>Tenure Reduced:</strong>
+                {{ formatTenure(results['personal'].tenureReducedMonths) }}
+              </p>
+              <p class="mb-0">
+                <strong>New Tenure:</strong>
+                {{ formatTenure(results['personal'].newTenureMonths) }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert alert-success rounded-4 mt-3" *ngIf="totalInterestSaved !== null">
+        <strong>Total Interest Saved Across All Loans:</strong>
+        ₹ {{ formatAmount(totalInterestSaved) }}
+      </div>
+    </div>
+
+    <!-- Logic explanation -->
+    <div class="mt-3 p-3 bg-light border rounded-4">
+      <h6 class="fw-semibold">How We Distribute (Pro Rata)</h6>
+      <pre class="bg-white p-3 rounded-3 border shadow-sm mb-2">
+weightᵢ = principalᵢ × rateᵢ
+shareᵢ  = (weightᵢ / Σ weight) × lumpSum
+
+Then for each loan:
+ - Calculate EMI from current principal, rate, tenure.
+ - Simulate loan once without part payment (baseline).
+ - Simulate again with one-time part payment in month 1
+   (EMI unchanged, tenure reduces).
+ - Interest saved = baseline interest − new interest.
+ - Tenure reduced = baseline months − new months.
+      </pre>
+    </div>
+
+  </div>
+</div>
